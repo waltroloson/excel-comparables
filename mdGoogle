@@ -1,0 +1,217 @@
+Option Explicit
+
+Public Sub GetDataGoogle(lRow As Long, sSymbol As String)
+  On Error GoTo Err_Handler
+  Dim sURL As String, sHTML As String, sVal As String
+  Dim oHttp As Object
+  Dim i As Long, j As Long
+  Dim sIS_Q As String, sBS_Q As String, sCF_Q As String
+  Dim sIS_A As String, sBS_A As String, sCF_A As String
+  Dim stmp As String
+  Dim adTMP(4) As Double, asTMP(4) As String
+  
+  sURL = Replace(g_GoogleURL, "#symb#", sSymbol)
+
+  '#Explain
+  'This part is used to ged HTML code of webpage by link in sURL
+  'we could use Internet Explorer's library and "Navigate" method, but this approach works faster
+  '#Done
+  Set oHttp = CreateObject("MSXML2.XMLHTTP")
+  oHttp.Open "GET", sURL, False
+  oHttp.Send
+  sHTML = oHttp.ResponseText
+  
+  
+  sHTML = ProcessGoogleHTML(sHTML)
+  
+  '<table id=fs-table
+  '#Explain is where did you get <table id=fs-table
+  'Here I just parse HTML code
+  'I looked at the webpage coding and found what string preceeds information I need to extract
+  'And here I find correct position where I can get data
+  '#Done
+  i = InStr(sHTML, "<table id=fs-table")
+  sIS_Q = GetTextBetween(sHTML, "<table id=fs-table", "</table", i) 'Quarterly Income statement
+  
+  If i > 0 Then i = InStr(i + 1, sHTML, "<table id=fs-table")
+  sIS_A = GetTextBetween(sHTML, "<table id=fs-table", "</table", i) 'Annual Income statement
+  
+  If i > 0 Then i = InStr(i + 1, sHTML, "<table id=fs-table")
+  sBS_Q = GetTextBetween(sHTML, "<table id=fs-table", "</table", i) 'Quarterly Balance Sheet
+  
+  If i > 0 Then i = InStr(i + 1, sHTML, "<table id=fs-table")
+  sBS_A = GetTextBetween(sHTML, "<table id=fs-table", "</table", i) 'Annual Balance Sheet
+  
+  If i > 0 Then i = InStr(i + 1, sHTML, "<table id=fs-table")
+  sCF_Q = GetTextBetween(sHTML, "<table id=fs-table", "</table", i) 'Quarterly Cash Flow
+  
+  If i > 0 Then i = InStr(i + 1, sHTML, "<table id=fs-table")
+  sCF_A = GetTextBetween(sHTML, "<table id=fs-table", "</table", i) 'Annual Cash Flow
+
+'  '"Quarterly Data" Line Gross Profit
+'  stmp = GetTextBetween(sIS_Q, "Gross Profit", "</tr>")
+'  i = 0
+'  For j = 1 To 4
+'    i = InStr(i + 1, stmp, "<td")
+'    If i > 0 Then
+'      sVal = AdvancedTrim(GetTextBetween(stmp, ">", "<", i))
+'      shData.Cells(lRow, Range("rGoogleGP_Q").Column + 4 - j).Value = GetNumberYahoo(sVal)
+'    End If
+'  Next j
+  
+  'Gross Profit. The column will be the second column from the left. This will be the second oldest year of data.
+  stmp = GetTextBetween(sIS_A, "Gross Profit", "</tr>")
+  i = 0
+  For j = 1 To 2
+    i = InStr(i + 1, stmp, "<td")
+    If i > 0 And j = 2 Then
+      sVal = AdvancedTrim(GetTextBetween(stmp, ">", "<", i))
+      shData.Cells(lRow, Range("rGoogleGP_A").Column).Value = GetNumberYahoo(sVal)
+    End If
+  Next j
+  
+'  '"Quarterly Data" Line Net Income
+'  stmp = GetTextBetween(sIS_Q, "Net Income" & vbLf, "</tr>")
+'  i = 0
+'  For j = 1 To 4
+'    i = InStr(i + 1, stmp, "<td")
+'    If i > 0 Then
+'      sVal = AdvancedTrim(GetTextBetween(stmp, ">", "<", i))
+'      shData.Cells(lRow, Range("rGoogleNI_Q").Column + 4 - j).Value = GetNumberYahoo(sVal)
+'    End If
+'  Next j
+  
+  'Net Income. The column will be the second column from the left. This will be the second oldest year of data.
+'  stmp = GetTextBetween(sIS_A, "Net Income" & vbLf, "</tr>")
+'  i = 0
+'  For j = 1 To 2
+'    i = InStr(i + 1, stmp, "<td")
+'    If i > 0 And j = 2 Then
+'      sVal = AdvancedTrim(GetTextBetween(stmp, ">", "<", i))
+'      shData.Cells(lRow, Range("rGoogleNI_A").Column).Value = GetNumberYahoo(sVal)
+'    End If
+'  Next j
+  
+'  '"Quarterly Data" Line Operating Income
+'  stmp = GetTextBetween(sIS_Q, "Operating Income" & vbLf, "</tr>")
+'  i = 0
+'  For j = 1 To 4
+'    i = InStr(i + 1, stmp, "<td")
+'    If i > 0 Then
+'      sVal = AdvancedTrim(GetTextBetween(stmp, ">", "<", i))
+'      shData.Cells(lRow, Range("rGoogleOI_Q").Column + 4 - j).Value = GetNumberYahoo(sVal)
+'    End If
+'  Next j
+  
+'  'Operating Income. The column will be the second column from the left. This will be the second oldest year of data.
+'  stmp = GetTextBetween(sIS_A, "Operating Income" & vbLf, "</tr>")
+'  i = 0
+'  For j = 1 To 2
+'    i = InStr(i + 1, stmp, "<td")
+'    If i > 0 And j = 2 Then
+'      sVal = AdvancedTrim(GetTextBetween(stmp, ">", "<", i))
+'      shData.Cells(lRow, Range("rGoogleOI_A").Column).Value = GetNumberYahoo(sVal)
+'    End If
+'  Next j
+  
+  'Cash from Operating Activities
+'  stmp = GetTextBetween(sCF_A, "Cash from Operating Activities" & vbLf, "</tr>")
+'  i = 0
+'  For j = 1 To 2
+'    i = InStr(i + 1, stmp, "<td")
+'    If i > 0 And j = 2 Then
+'      sVal = AdvancedTrim(GetTextBetween(stmp, ">", "<", i))
+'      shData.Cells(lRow, Range("rGoogleCFOA_A").Column).Value = GetNumberYahoo(sVal)
+'    End If
+'  Next j
+  
+  'Income Statement. Diluted Weighted Average Shares. Q
+  stmp = GetTextBetween(sIS_Q, "Diluted Weighted Average Shares" & vbLf, "</tr>")
+  i = 0
+  For j = 1 To 5
+    i = InStr(i + 1, stmp, "<td")
+    If i > 0 Then
+      sVal = AdvancedTrim(GetTextBetween(stmp, ">", "<", i))
+      If j = 1 Then shData.Cells(lRow, Range("rGoogleDilSh_Q").Column + 1).Value = GetNumberYahoo(sVal)
+      If j = 5 Then shData.Cells(lRow, Range("rGoogleDilSh_Q").Column).Value = GetNumberYahoo(sVal)
+    End If
+  Next j
+  
+  'Income Statement. Annual.
+  stmp = GetTextBetween(sIS_A, "Cost of Revenue, Total", "</tr>")
+  i = 0
+  For j = 1 To 2
+    i = InStr(i + 1, stmp, "<td")
+    If i > 0 Then
+      sVal = AdvancedTrim(GetTextBetween(stmp, ">", "<", i))
+      shData.Cells(lRow, Range("rGoogleIS_COGS_A").Column + 2 - j).Value = GetNumberYahoo(sVal)
+    End If
+  Next j
+  
+  'Income Statement. Annual.
+  stmp = GetTextBetween(sIS_A, "Total Operating Expense", "</tr>")
+  i = 0
+  For j = 1 To 2
+    i = InStr(i + 1, stmp, "<td")
+    If i > 0 Then
+      sVal = AdvancedTrim(GetTextBetween(stmp, ">", "<", i))
+      shData.Cells(lRow, Range("rGoogleIS_OpEx_A").Column + 2 - j).Value = GetNumberYahoo(sVal)
+    End If
+  Next j
+  
+  'Cash from Operating Activities
+'  stmp = GetTextBetween(sCF_A, "Capital Expenditures" & vbLf, "</tr>")
+'  i = 0
+'  For j = 1 To 2
+'    i = InStr(i + 1, stmp, "<td")
+'    If i > 0 And j = 2 Then
+'      sVal = AdvancedTrim(GetTextBetween(stmp, ">", "<", i))
+'      shData.Cells(lRow, Range("rGoogleCFCapEx_A").Column).Value = GetNumberYahoo(sVal)
+'    End If
+'  Next j
+  
+Exit_Label:
+  On Error Resume Next
+  Set oHttp = Nothing
+  Exit Sub
+Err_Handler:
+  MsgBox Err.Description, vbCritical, "GetDataGoogle"
+  Resume Exit_Label
+End Sub
+
+Public Sub GetCFDataByPeriod(ByRef dtmp() As Double, ByRef stmp() As String, lCount As Long)
+  On Error GoTo Err_Handler
+  Dim i As Long
+  Dim dCumm As Double
+  
+  For i = 1 To lCount
+    dtmp(i) = 0
+  Next i
+  
+  dCumm = 0
+  For i = lCount To 1 Step -1
+    If IsNumeric2(stmp(i)) Then
+        dtmp(i) = CDbl(stmp(i)) - dCumm
+        dCumm = dCumm + dtmp(i)
+    End If
+  Next i
+  
+Exit_Label:
+  On Error Resume Next
+  Exit Sub
+Err_Handler:
+  'MsgBox Err.Description, vbCritical, "GetCFDataByPeriod"
+  Debug.Print Err.Description
+  Resume Exit_Label
+End Sub
+
+Private Function ProcessGoogleHTML(sHTML As String) As String
+  On Error Resume Next
+  Dim stmp As String
+  
+  stmp = sHTML
+  stmp = Replace(stmp, "<span class=chr>", "")
+  
+  ProcessGoogleHTML = stmp
+  
+End Function
