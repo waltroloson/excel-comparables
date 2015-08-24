@@ -1,0 +1,151 @@
+    Option Explicit
+
+Public Sub GetDataYahoo(lRow As Long, sSymbol As String)
+  On Error GoTo Err_Handler
+  Dim sURL As String, sURL_CSV As String, sHTML As String, sHTML_CSV As String, sVal As String
+  Dim oHttp As Object, oHttpCSV As Object
+  Dim i As Long, j As Long
+  Dim vtmp As Variant
+  Dim dMult As Double
+  
+  'Replacing #symb# in url with ticker symbol
+  sURL = Replace(g_YahooURL, "#symb#", sSymbol)
+  '#Explain Why do you  need a second csv file?
+  'Here I use only one CSV file
+  'sURL_CSV - weblink by which I can get this CSV
+  'sHTML_CSV - text contained in CSV file
+  'I use Yahoo API to get some data
+  'One can create a request (speciall formatted url)
+  'And Yahoo will return CSV file with requested data
+  '#Done
+  sURL_CSV = Replace(g_YahooURL_CSV, "#symb#", sSymbol)
+
+  '#Explain what does oHttp do? And oHttp.Open/ oHttp.Send
+  'These lines are used to get text from webpage/file in web
+  '.open opens a connection and .send sends request
+  '#Done
+  Set oHttp = CreateObject("MSXML2.XMLHTTP")
+  oHttp.Open "GET", sURL, False
+  oHttp.Send
+  sHTML = oHttp.ResponseText
+  
+  Set oHttpCSV = CreateObject("MSXML2.XMLHTTP")
+  oHttpCSV.Open "GET", sURL_CSV, False
+  oHttpCSV.Send
+  sHTML_CSV = oHttpCSV.ResponseText
+  vtmp = Split(sHTML_CSV, ",")
+  
+  'Change %
+  'Returns position of first ocurrence of one string within another
+  i = InStr(sHTML, "yfs_p43_")
+  dMult = 1: j = 0
+  'Returns the position of an occurrence of one string within another, from the end of string
+  If i > 0 Then j = InStrRev(sHTML, "_arrow", i)
+  'IIf(expr, truepart, falsepart) returns one of two parts depending on evaluation of expression
+  If j > 3 Then dMult = IIf(Mid(sHTML, j - 3, 3) = "neg", -1, 1)
+  sVal = GetTextBetween(sHTML, ">", "<", i)
+  sVal = GetNumberYahoo(sVal)
+  shData.Cells(lRow, Range("rYahooChange").Column).Value = sVal * dMult
+  
+  'PEG Ratio (5 yr expected)
+'  i = InStr(sHTML, "???")
+  sVal = ""
+  If UBound(vtmp) >= 1 Then sVal = vtmp(1)
+  shData.Cells(lRow, Range("rYahooPEG").Column).Value = GetNumberYahoo(sVal)
+  
+  'Float
+  i = InStr(sHTML, "Short % of Float")
+  If i > 0 Then i = InStr(i, sHTML, "yfnc_tabledata1")
+  'GetTextBetween gets values between two strings
+  sVal = GetTextBetween(sHTML, ">", "<", i)
+  shData.Cells(lRow, Range("rYahooFloat").Column).Value = GetNumberYahoo(sVal)
+  
+  'MV
+  sVal = ""
+  'Finds where sVal is for MV
+  If UBound(vtmp) >= 2 Then sVal = vtmp(2)
+  dMult = 1
+  'If billion then it multiples number by 1000
+  If Right(sVal, 1) = "B" Then dMult = 1000
+  If Not IsNumeric(Right(sVal, 1)) And sVal <> "" Then sVal = Left(sVal, Len(sVal) - 1)
+  shData.Cells(lRow, Range("rYahooMV").Column).Value = GetNumberYahoo(sVal) * dMult
+  If sVal = "" Then g_RunBloombergUpdate = True
+  
+  'Price
+  sVal = ""
+  If UBound(vtmp) >= 3 Then sVal = vtmp(3)
+  shData.Cells(lRow, Range("rYahooPrice").Column).Value = GetNumberYahoo(sVal)
+  If sVal = "" Then g_RunBloombergUpdate = True
+  
+  'Enterprise Value (M)
+  i = InStr(sHTML, "Enterprise Value")
+  If i > 0 Then i = InStr(i, sHTML, "yfnc_tabledata1")
+  sVal = GetTextBetween(sHTML, ">", "<", i)
+  dMult = 1
+  If Right(sVal, 1) = "B" Then dMult = 1000
+  If Not IsNumeric(Right(sVal, 1)) And sVal <> "" Then sVal = Left(sVal, Len(sVal) - 1)
+  shData.Cells(lRow, Range("rYahooValue").Column).Value = GetNumberYahoo(sVal) * dMult
+  
+  'EBIDTA (ttm)
+  sVal = ""
+  If UBound(vtmp) >= 4 Then sVal = vtmp(4)
+  dMult = 1
+  If Right(sVal, 1) = "B" Then dMult = 1000
+  If Not IsNumeric(Right(sVal, 1)) And sVal <> "" Then sVal = Left(sVal, Len(sVal) - 1)
+  shData.Cells(lRow, Range("rYahooEBITDA").Column).Value = GetNumberYahoo(sVal) * dMult
+  
+  'Diluted EPS (ttm)
+  i = InStr(sHTML, "Diluted EPS (ttm)")
+  If i > 0 Then i = InStr(i, sHTML, "yfnc_tabledata1")
+  sVal = GetTextBetween(sHTML, ">", "<", i)
+  shData.Cells(lRow, Range("rYahooEPS").Column).Value = GetNumberYahoo(sVal)
+  If sVal = "" Then g_RunBloombergUpdate = True
+  
+  '10 days avg. Vol
+  i = InStr(sHTML, "Avg Vol (10 day)")
+  If i > 0 Then i = InStr(i, sHTML, "yfnc_tabledata1")
+  sVal = GetTextBetween(sHTML, ">", "<", i)
+  shData.Cells(lRow, Range("rYahooVol10days").Column).Value = GetNumberYahoo(sVal)
+  
+  'Avg Vol (3 month)
+  i = InStr(sHTML, "Avg Vol (3 month)")
+  If i > 0 Then i = InStr(i, sHTML, "yfnc_tabledata1")
+  sVal = GetTextBetween(sHTML, ">", "<", i)
+  shData.Cells(lRow, Range("rYahooVol3months").Column).Value = GetNumberYahoo(sVal)
+  
+  'Book Value per Share (mrq).
+  i = InStr(sHTML, "Book Value Per Share (mrq)")
+  If i > 0 Then i = InStr(i, sHTML, "yfnc_tabledata1")
+  sVal = GetTextBetween(sHTML, ">", "<", i)
+  shData.Cells(lRow, Range("rYahooBookPerShare").Column).Value = GetNumberYahoo(sVal)
+  
+  '52 Week High
+  i = InStr(sHTML, "52-Week High")
+  If i > 0 Then i = InStr(i, sHTML, "yfnc_tabledata1")
+  sVal = GetTextBetween(sHTML, ">", "<", i)
+  shData.Cells(lRow, Range("rYahoo52High").Column).Value = GetNumberYahoo(sVal)
+  
+  '52 Week Low
+  i = InStr(sHTML, "52-Week Low")
+  If i > 0 Then i = InStr(i, sHTML, "yfnc_tabledata1")
+  sVal = GetTextBetween(sHTML, ">", "<", i)
+  shData.Cells(lRow, Range("rYahoo52Low").Column).Value = GetNumberYahoo(sVal)
+  
+  'Float (M)
+  i = InStr(sHTML, "Float:<")
+  If i > 0 Then i = InStr(i, sHTML, "yfnc_tabledata1")
+  sVal = GetTextBetween(sHTML, ">", "<", i)
+  dMult = 1
+  If Right(sVal, 1) = "B" Then dMult = 1000
+  If Not IsNumeric(Right(sVal, 1)) And sVal <> "" Then sVal = Left(sVal, Len(sVal) - 1)
+  shData.Cells(lRow, Range("rYahoo52Float").Column).Value = GetNumberYahoo(sVal) * dMult
+  
+Exit_Label:
+  On Error Resume Next
+  Set oHttp = Nothing
+  Set oHttpCSV = Nothing
+  Exit Sub
+Err_Handler:
+  MsgBox Err.Description, vbCritical, "GetDataYahoo"
+  Resume 'Exit_Label
+End Sub
