@@ -1,0 +1,276 @@
+Option Explicit
+
+Public g_IE As Object
+Public Const g_IE_Is_Visible As Boolean = False
+Public g_RunBloombergUpdate As Boolean
+
+Public Sub ImportData()
+  On Error GoTo Err_Handler
+  Dim i As Long, lRows As Long, lRow As Long
+  Dim lColUpdate As Long, lColUpdateDate As Long
+  Dim sSymbolGoogle As String, sSymbolYahoo As String, sSymbolEstimize As String, sSymbolGF As String, sSymbolHM As String, sSymbolFinViz As String, sSymbolBloomberg As String
+  Dim lColSymbolGoogle As Long, lColSymbolYahoo As Long, lColSymbolEstimize As Long, lColSymbolGF As Long, lColSymbolHM As Long, lColSymbolFinViz As Long, lColSymbolBloomberg As Long
+  
+  'Type of cursor change
+  Application.Cursor = xlWait
+  Range("rStatus").Value = "Initiating..."
+  
+  'Create IE instance which will be used in other functions
+  Set g_IE = CreateObject("InternetExplorer.Application")
+  'Hides or makes worksheet visible
+  'g_IE is the object, ".Visible" is a property in worksheets
+  g_IE.Visible = g_IE_Is_Visible
+  
+  'UsedRange.Row gets the first row that uses data, then you're adding the total number of rows
+  lRows = shData.UsedRange.Row + shData.UsedRange.Rows.Count - 1
+  'rHeader is row 5, the way it is coded we have to start ticker stuff on row 6
+  lRow = Range("rHeader").Row + 1
+  'rSymbol is the column with the "Google Symbol" (ticker)
+  lColSymbolGoogle = Range("rSymbolGoogle").Column
+  lColSymbolYahoo = Range("rSymbolYahoo").Column
+  lColSymbolEstimize = Range("rSymbolEstimize").Column
+  lColSymbolGF = Range("rSymbolGF").Column
+  lColSymbolHM = Range("rSymbolHM").Column
+  lColSymbolFinViz = Range("rSymbolFinViz").Column
+  lColSymbolBloomberg = Range("rSymbolBloomberg").Column
+  'column for the update storing "TRUE or FALSE"
+  lColUpdate = Range("rUpdate").Column
+  'Stores update date later on
+  lColUpdateDate = Range("rUpdateDate").Column
+  
+  'Loop through all rows and if cell with ticker is not empty - download metrics for this ticker
+  For i = lRow To lRows
+    g_RunBloombergUpdate = False
+    
+    'Stores the stock ticker symbol from Google Symbol only
+    sSymbolGoogle = shData.Cells(i, lColSymbolGoogle)
+    sSymbolYahoo = shData.Cells(i, lColSymbolYahoo)
+    sSymbolEstimize = shData.Cells(i, lColSymbolEstimize)
+    sSymbolGF = shData.Cells(i, lColSymbolGF)
+    sSymbolHM = shData.Cells(i, lColSymbolHM)
+    sSymbolFinViz = shData.Cells(i, lColSymbolFinViz)
+    sSymbolBloomberg = shData.Cells(i, lColSymbolBloomberg)
+    'If sSymbol is not blank and if the update column has true then excecute code
+    If shData.Cells(i, lColUpdate) = True Then
+      If sSymbolYahoo <> "" Then
+        'This is just to place the words in the menu updater to let use know where the macro is in terms of run state
+        Range("rStatus").Value = "[Row #" & CStr(i - lRow + 1) & "/" & CStr(lRows - lRow + 1) & "] " & sSymbolYahoo & ": Yahoo"
+        'Calls the GetDataYahoo in the Yahoo module with inputs i and sSymbol
+        GetDataYahoo i, sSymbolYahoo
+      Else
+        g_RunBloombergUpdate = True
+      End If
+        
+      If sSymbolGoogle <> "" Then
+        Range("rStatus").Value = "[Row #" & CStr(i - lRow + 1) & "/" & CStr(lRows - lRow + 1) & "] " & sSymbolGoogle & ": Google"
+        GetDataGoogle i, sSymbolGoogle
+      End If
+        
+      If sSymbolEstimize <> "" Then
+        Range("rStatus").Value = "[Row #" & CStr(i - lRow + 1) & "/" & CStr(lRows - lRow + 1) & "] " & sSymbolEstimize & ": Estimize"
+        GetDataEstimize i, sSymbolEstimize
+      End If
+        
+      If sSymbolGF <> "" Then
+        Range("rStatus").Value = "[Row #" & CStr(i - lRow + 1) & "/" & CStr(lRows - lRow + 1) & "] " & sSymbolGF & ": GuruFocus"
+        GetDataGuruFocus i, sSymbolGF
+      End If
+        
+      If sSymbolHM <> "" Then
+        Range("rStatus").Value = "[Row #" & CStr(i - lRow + 1) & "/" & CStr(lRows - lRow + 1) & "] " & sSymbolHM & ": HedgeMind"
+        GetDataHedgeMind i, sSymbolHM
+      End If
+        
+      If sSymbolFinViz <> "" Then
+        Range("rStatus").Value = "[Row #" & CStr(i - lRow + 1) & "/" & CStr(lRows - lRow + 1) & "] " & sSymbolFinViz & ": Finviz"
+        GetDataFinviz i, sSymbolFinViz
+      End If
+      
+      If g_RunBloombergUpdate And sSymbolBloomberg <> "" Then
+        Range("rStatus").Value = "[Row #" & CStr(i - lRow + 1) & "/" & CStr(lRows - lRow + 1) & "] " & sSymbolBloomberg & ": Bloomberg"
+        GetDataBloomberg i, sSymbolBloomberg
+      End If
+    
+      'Updates the date for today's date
+      shData.Cells(i, lColUpdateDate) = Now()
+    End If
+  Next i
+  
+'Error handling
+'Resets all things to default if error occurs
+Exit_Label:
+  On Error Resume Next
+  Application.Cursor = xlDefault
+  Range("rStatus").Value = "Complete"
+  g_IE.Quit: Set g_IE = Nothing
+  Exit Sub
+'Will output some kind of error message/ label
+Err_Handler:
+  MsgBox Err.Description, vbCritical, "ImportData"
+  Resume Exit_Label
+End Sub
+
+Public Function GetTextBetween(sInput, sLeft As String, sRight As String, Optional lStart As Long = 1) As String
+'Auxilary function - returns text between two strings
+'Gets text between two strings
+  On Error GoTo 0
+  Dim i As Long, j As Long
+  Dim stmp As String
+  
+  If lStart > 0 Then i = InStr(lStart, sInput, sLeft)
+  If i > 0 Then j = InStr(i + Len(sLeft), sInput, sRight)
+  If j > 0 Then
+    stmp = Replace(Mid(sInput, i + Len(sLeft), j - i - Len(sLeft)), "&nbsp;", " ")
+    stmp = Replace(stmp, "&amp;", "&")
+    GetTextBetween = stmp
+  End If
+End Function
+
+'More advanced trims than your own trim
+Public Function AdvancedTrim(sInput As String) As String
+'Auxilary function - removes spaces, tabs, returns from start and end of the string
+'#Explain specific mechanics further
+'Often during parsing of HTML code I receive string with spaces, tabs and carriage returns symbols
+'I need to remove them
+'For that I loop in cycle from the first symbol until I meet some meaningfull character (letter, number)
+'After that I do the same loop from the end of the input string
+'Function returns string between these two meningfull characters
+'For example if sInput = "      123             "
+'Function will return "123"
+'#Done
+  On Error Resume Next
+  Dim stmp As String
+  Dim i As Long
+  Dim bGoOn As Boolean
+  
+  stmp = Trim(sInput)
+  
+  If stmp <> "" Then
+    bGoOn = True
+    i = 1
+    While bGoOn And i < Len(stmp)
+      If InStr(vbCr & vbLf & vbTab & vbCrLf & " ", Mid(stmp, i, 1)) = 0 Then
+        bGoOn = False
+      Else
+        i = i + 1
+      End If
+    Wend
+    stmp = Right(stmp, Len(stmp) - i + 1)
+    bGoOn = True
+    
+    i = Len(stmp)
+    While bGoOn And i > 0
+      If InStr(vbCr & vbLf & vbTab & vbCrLf & " ", Mid(stmp, i, 1)) = 0 Then
+        bGoOn = False
+      Else
+        i = i - 1
+      End If
+    Wend
+    stmp = Left(stmp, i)
+  End If
+  
+  AdvancedTrim = stmp
+End Function
+
+Public Function GetNumberYahoo(sVal As String) As Double
+'Converts string into number removing decimal separators and converting percents into decimal number
+  On Error Resume Next
+  Dim stmp As String
+  Dim dtmp As Double
+  Dim bPercent As Boolean
+  
+  '#Explain. Not entirely sure what stmp is supposed to be
+  'stmp is the value retrived from HTML code on webpage
+  'Unfortunately it is not always number
+  'For example they can place "-" or "null" instead of "0"
+  'or print "50%" instead of "0.5", or print "(50)" instead of "-50"
+  'This function converts strings formatted in such way into correct number
+  '#Done
+  If stmp = "-" Then stmp = "0"
+  If stmp = "null" Then stmp = "0"  'For Estimize
+  
+  'Replace( string1, find, replacement)
+  stmp = Replace(Replace(sVal, "(", ""), ")", "")
+  bPercent = (Right(stmp, 1) = "%")
+  stmp = Replace(stmp, "%", "")
+  stmp = Replace(stmp, ",", "")
+  
+  'Convert to double - CDbl
+  dtmp = CDbl(stmp)
+  If Err.Number <> 0 Then dtmp = Replace(stmp, ".", ",")
+  dtmp = CDbl(stmp)
+
+  '#Explain. What does this line do? how does dtmp/IIf() work out? Not sure how IIf interacts in this case.
+  'bPercent equal to True if "%" symbol was found in the string
+  'I need this line to convert for example "30%" to number 0.3
+  'IIf in this line will return 100 if bPercent=True
+  'You may find description of IIf here - https://support.office.com/en-ca/article/IIf-Function-32436ecf-c629-48a3-9900-647539c764e3
+  '#Done
+  GetNumberYahoo = dtmp / IIf(bPercent, 100, 1)
+  
+End Function
+
+Public Function IsNumeric2(stmp As String) As Boolean
+'Checks if string is number
+  On Error Resume Next
+  
+  'Boolean statement Isnumeric and stmp <> "" (not equal to)
+  IsNumeric2 = (IsNumeric(stmp) And stmp <> "")
+  
+End Function
+
+Public Function IENavigate(ByRef objIE As Object, sURL As String) As Boolean
+'Navigates Internet Explorer to specified URL
+  On Error GoTo Err_Handler
+  Dim lNumOfAttempts As Long
+  Dim dtmp As Double
+  
+  lNumOfAttempts = 3
+  
+'#Explain what does this line do ?
+'It goes to webpage link stored in sURL variable
+'You may find description of this function here - https://msdn.microsoft.com/en-us/library/aa752093(v=vs.85).aspx
+'#Done
+  objIE.Navigate sURL
+  
+  'Restricts time for each attempt
+  dtmp = Timer()
+  Do
+    DoEvents
+    If Timer() - dtmp > 30 Then
+        lNumOfAttempts = lNumOfAttempts - 1
+        If lNumOfAttempts = 0 Then Err.Raise 513, "GetURLs", "Timeout expired." & vbCrLf & sURL
+    End If
+  Loop Until Not objIE.Busy And (objIE.ReadyState = 4 Or objIE.ReadyState = 4)
+  
+  IENavigate = True
+  
+Exit_Label:
+  On Error Resume Next
+  Exit Function
+Err_Handler:
+  IENavigate = False
+  Debug.Print Err.Description
+  Resume Exit_Label
+End Function
+
+Public Function RemoveTags(sInput As String) As String
+  On Error Resume Next
+  Dim RegEx As Object
+  Set RegEx = CreateObject("vbscript.regexp")
+  Dim sOut As String, sRemChar As String
+  Dim i As Long, lPos As Long, lLastPos As Long
+  
+  With RegEx
+   .Global = True
+   .IgnoreCase = True
+   .MultiLine = True
+   .Pattern = "<[^>]+>" 'Regular Expression for HTML Tags.
+  End With
+  
+'Remove tags from string sInput
+  RemoveTags = RegEx.Replace(sInput, "")
+
+  Set RegEx = Nothing
+
+End Function
