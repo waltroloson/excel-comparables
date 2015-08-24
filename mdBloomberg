@@ -1,0 +1,81 @@
+Option Explicit
+
+Public Sub GetDataBloomberg(lRow As Long, sSymbol As String)
+  On Error GoTo Err_Handler
+  Dim i As Long
+  Dim sURL As String, sHTML As String
+  Dim stmp As String, sVal As String
+  Dim oHttp As Object
+  Dim dPrice As Double, dEarnings As Double
+  
+  sURL = Replace(g_BloombergURL, "#symb#", sSymbol)
+
+  Set oHttp = CreateObject("MSXML2.XMLHTTP")
+  oHttp.Open "GET", sURL, False
+  oHttp.Send
+  sHTML = oHttp.ResponseText
+  
+  sHTML = Replace(sHTML, """", "")
+  
+  'Price
+  i = InStr(sHTML, "itemprop=price")
+  If i > 0 Then dPrice = GetNumberYahoo(AdvancedTrim(GetTextBetween(sHTML, "content=", "/", i + 1)))
+  
+  'Eranings per share
+  i = InStr(sHTML, "earningsPerShare")
+  If i > 0 Then dEarnings = GetNumberYahoo(AdvancedTrim(GetTextBetween(sHTML, ":", ",", i + 1)))
+  
+  'P/E
+  If dEarnings = 0 Then
+    shData.Cells(lRow, Range("rBloomberg_PE").Column).Value = ""
+  Else
+    shData.Cells(lRow, Range("rBloomberg_PE").Column).Value = dPrice / dEarnings
+  End If
+  
+  'P/S
+  i = InStr(sHTML, "priceToSalesRatio")
+  If i > 0 Then
+    shData.Cells(lRow, Range("rBloomberg_PS").Column).Value = GetNumberYahoo(AdvancedTrim(GetTextBetween(sHTML, ":", ",", i + 1)))
+  Else
+    shData.Cells(lRow, Range("rBloomberg_PS").Column).Value = ""
+  End If
+  
+  'EPS
+  If dEarnings <> 0 Then
+    shData.Cells(lRow, Range("rBloomberg_EPS").Column).Value = dEarnings
+  Else
+    shData.Cells(lRow, Range("rBloomberg_EPS").Column).Value = ""
+  End If
+  
+  'Market Cap
+  i = InStr(sHTML, "marketCap")
+  If i > 0 Then
+    shData.Cells(lRow, Range("rBloomberg_MCap").Column).Value = GetNumberYahoo(AdvancedTrim(GetTextBetween(sHTML, ":", ",", i + 1)))
+  Else
+    shData.Cells(lRow, Range("rBloomberg_MCap").Column).Value = ""
+  End If
+  
+  'Shares Outstanding
+  i = InStr(sHTML, "sharesOutstanding")
+  If i > 0 Then
+    shData.Cells(lRow, Range("rBloomberg_Shares").Column).Value = GetNumberYahoo(AdvancedTrim(GetTextBetween(sHTML, ":", ",", i + 1)))
+  Else
+    shData.Cells(lRow, Range("rBloomberg_Shares").Column).Value = ""
+  End If
+  
+  'Dividend Ind. Gross Yield
+  i = InStr(sHTML, "indicatedGrossDividendYield")
+  If i > 0 Then
+    shData.Cells(lRow, Range("rBloomberg_DIGY").Column).Value = GetNumberYahoo(AdvancedTrim(GetTextBetween(sHTML, ":", ",", i + 1))) / 100
+  Else
+    shData.Cells(lRow, Range("rBloomberg_DIGY").Column).Value = ""
+  End If
+  
+Exit_Label:
+  On Error Resume Next
+  Set oHttp = Nothing
+  Exit Sub
+Err_Handler:
+  MsgBox Err.Description, vbCritical, "GetDataBloomberg"
+  Resume Exit_Label
+End Sub
