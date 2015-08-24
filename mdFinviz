@@ -1,0 +1,39 @@
+Option Explicit
+
+Public Sub GetDataFinviz(lRow As Long, sSymbol As String)
+  On Error GoTo Err_Handler
+  Dim i As Long
+  Dim sURL As String, sHTML As String
+  Dim stmp As String, sVal As String
+  Dim oHttp As Object
+  
+  sURL = Replace(g_FinvizURL, "#symb#", sSymbol)
+
+  Set oHttp = CreateObject("MSXML2.XMLHTTP")
+  oHttp.Open "GET", sURL, False
+  oHttp.Send
+  sHTML = oHttp.ResponseText
+  
+  'Perf Year
+  i = InStr(sHTML, "Perf Year")
+  If i > 0 Then i = InStr(i, sHTML, "<span")
+  
+  sVal = AdvancedTrim(GetTextBetween(sHTML, ">", "<", i + 1))
+  shData.Cells(lRow, Range("rFinfiz_PerfY").Column).Value = GetNumberYahoo(sVal)
+  
+  'Perf Quater
+  i = InStr(sHTML, "Perf Quarter")
+  If i > 0 Then i = InStr(i, sHTML, "<span")
+  
+  sVal = AdvancedTrim(GetTextBetween(sHTML, ">", "<", i + 1))
+  shData.Cells(lRow, Range("rFinfiz_PerfQ").Column).Value = GetNumberYahoo(sVal)
+  
+Exit_Label:
+  On Error Resume Next
+  Set oHttp = Nothing
+  Exit Sub
+Err_Handler:
+  MsgBox Err.Description, vbCritical, "GetDataFinviz"
+  Resume Exit_Label
+End Sub
+
