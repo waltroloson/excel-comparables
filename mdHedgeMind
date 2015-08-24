@@ -1,0 +1,36 @@
+Option Explicit
+
+Public Sub GetDataHedgeMind(lRow As Long, sSymbol As String)
+  On Error GoTo Err_Handler
+  Dim i As Long
+  Dim sURL As String, sHTML As String
+  Dim stmp As String, sVal As String
+  Dim oHttp As Object
+  
+  'Replaces #symb# with actual ticker
+  sURL = Replace(g_HedgeMindURL, "#symb#", sSymbol)
+
+  '#Explain don't really understand this block of code oHttp
+  'This part is used to ged HTML code of webpage by link in sURL
+  'we could use Internet Explorer's library and "Navigate" method, but this approach works faster
+  '#Done
+  Set oHttp = CreateObject("MSXML2.XMLHTTP")
+  oHttp.Open "GET", sURL, False
+  oHttp.Send
+  sHTML = oHttp.ResponseText
+  
+  'Number of funds
+  i = InStr(sHTML, "No. of Hedge Funds Owing")
+  If i > 0 Then i = InStr(i, sHTML, "td0-right")
+  
+  sVal = AdvancedTrim(GetTextBetween(sHTML, ">", "<", i))
+  shData.Cells(lRow, Range("rHedgeMind_FundsNum").Column).Value = GetNumberYahoo(sVal)
+  
+Exit_Label:
+  On Error Resume Next
+  Set oHttp = Nothing
+  Exit Sub
+Err_Handler:
+  MsgBox Err.Description, vbCritical, "GetDataHedgeMind"
+  Resume Exit_Label
+End Sub
