@@ -1,0 +1,204 @@
+Option Explicit
+
+Public Sub GetDataEstimize(lRow As Long, sSymbol As String)
+  On Error GoTo Err_Handler
+  Dim sURL As String, sHTML As String
+  Dim stmp As String, sVal As String, stmp2 As String
+  Dim i As Long, j As Long
+  Dim sVals(4) As String
+  Dim sValsEstimize(4) As String, sValsWS(4) As String
+  Dim dVals(8) As Double, lFirstIndex As Long
+  
+  'Pulls the URL from constant module and replaces #symbol# with actual symbol
+  sURL = Replace(g_EstimizeURL, "#symb#", sSymbol)
+  
+  'IE browser he initiated in Main module kind of like a IE instant he opens to download csv
+  IENavigate g_IE, sURL
+  'Getting HTML of the page
+  sHTML = g_IE.Document.body.innerHTML
+  
+  'Iterating through it to the find the word EPS Finding EPS Actual
+  'Trimming around it to trim out the data
+  stmp = GetTextBetween(sHTML, "Estimize.ReleaseCollection", ");")
+  i = 1
+  For j = 1 To 8
+    If i > 0 Then i = InStr(i + 1, stmp, """eps""")
+    If i > 0 Then
+      sVal = AdvancedTrim(GetTextBetween(stmp, ":", ",", i))
+    End If
+    shData.Cells(lRow, Range("rEstimizeEPS_Actual").Column + j - 1).Value = GetNumberYahoo(sVal)
+  Next j
+  
+  'Revenue Actual
+  For i = 1 To 8
+    dVals(i) = 0
+  Next i
+  lFirstIndex = -1
+  stmp = GetTextBetween(sHTML, "Estimize.ReleaseCollection", ");")
+  i = 1
+  'Goal is to set first index in this first for loop
+  For j = 1 To 8
+    If i > 0 Then i = InStr(i + 1, stmp, """revenue""")
+    If i > 0 Then
+      sVal = AdvancedTrim(GetTextBetween(stmp, ":", ",", i))
+    End If
+    dVals(j) = GetNumberYahoo(sVal)
+    If dVals(j) > 0 Then lFirstIndex = j
+    'shData.Cells(lRow, Range("rEstimizeRevenue_Actual").Column + j - 1).Value = GetNumberYahoo(sVal)
+  Next j
+'  If lFirstIndex = -1 Then lFirstIndex = 9
+'Second for loops is him using first index to set value to revenue
+  For j = 1 To 8
+    If j > 8 - lFirstIndex Then
+      shData.Cells(lRow, Range("rEstimizeRevenue_Actual").Column + j - 1).Value = dVals(j - (8 - lFirstIndex))
+    Else
+      shData.Cells(lRow, Range("rEstimizeRevenue_Actual").Column + j - 1).Value = 0
+    End If
+  Next j
+  
+  'Predictions
+  'Checking for specific substring ina  string and if it is within html then it returns index of it
+  i = InStr(sHTML, "next quarter-navigation")
+  If i > 0 Then i = InStr(i, sHTML, "href")
+  stmp = ""
+  stmp = AdvancedTrim(GetTextBetween(sHTML, "href=""", """ ", i))
+  stmp2 = AdvancedTrim(GetTextBetween(sHTML, "href=""", """>", i))
+  If Len(stmp2) <> 0 And Len(stmp2) < Len(stmp) Then stmp = stmp2
+  If stmp <> "" Then
+    sURL = g_EstimizeBaseURL & ShiftEstimizeURL(stmp, 3)
+    IENavigate g_IE, sURL
+    sHTML = g_IE.Document.body.innerHTML
+    
+    'EPS Wall St.
+    stmp = GetTextBetween(sHTML, "Estimize.ReleaseCollection", ");")
+    For j = 1 To 4
+        sVals(j) = ""
+    Next j
+    i = 1
+    For j = 1 To 8
+      If i > 0 Then i = InStr(i + 1, stmp, """wallstreet_eps_mean""")
+      If i > 0 Then
+        sVal = AdvancedTrim(GetTextBetween(stmp, ":", ",", i))
+      End If
+        sVals(1) = sVals(2)
+        sVals(2) = sVals(3)
+        sVals(3) = sVals(4)
+        sVals(4) = sVal
+    Next j
+    For j = 1 To 4
+        sValsWS(j) = sVals(j)
+    Next j
+    
+    'EPS Estimize
+    stmp = GetTextBetween(sHTML, "Estimize.ReleaseCollection", ");")
+    For j = 1 To 4
+        sVals(j) = ""
+    Next j
+    i = 1
+    For j = 1 To 8
+      If i > 0 Then i = InStr(i + 1, stmp, """estimize_eps_mean""")
+      If i > 0 Then
+        sVal = AdvancedTrim(GetTextBetween(stmp, ":", ",", i))
+      End If
+        sVals(1) = sVals(2)
+        sVals(2) = sVals(3)
+        sVals(3) = sVals(4)
+        sVals(4) = sVal
+    Next j
+    For j = 1 To 4
+        sValsEstimize(j) = sVals(j)
+    Next j
+    
+    'Output results. If Estimize data exists, print it, otherwise print Wall St. data
+    For j = 1 To 4
+      If GetNumberYahoo(sValsEstimize(j)) <> 0 Then
+        shData.Cells(lRow, Range("rEstimizeEPS_Pred").Column + j - 1).Value = GetNumberYahoo(sValsEstimize(j))
+      Else
+        shData.Cells(lRow, Range("rEstimizeEPS_Pred").Column + j - 1).Value = GetNumberYahoo(sValsWS(j))
+      End If
+    Next j
+    
+    'Revenue Wall St.
+    stmp = GetTextBetween(sHTML, "Estimize.ReleaseCollection", ");")
+    For j = 1 To 4
+        sVals(j) = ""
+    Next j
+    i = 1
+    For j = 1 To 8
+      If i > 0 Then i = InStr(i + 1, stmp, """wallstreet_revenue_mean""")
+      If i > 0 Then
+        sVal = AdvancedTrim(GetTextBetween(stmp, ":", ",", i))
+      End If
+        sVals(1) = sVals(2)
+        sVals(2) = sVals(3)
+        sVals(3) = sVals(4)
+        sVals(4) = sVal
+    Next j
+    For j = 1 To 4
+        sValsWS(j) = sVals(j)
+    Next j
+    
+    'Revenue Estimize
+    stmp = GetTextBetween(sHTML, "Estimize.ReleaseCollection", ");")
+    For j = 1 To 4
+        sVals(j) = ""
+    Next j
+    i = 1
+    For j = 1 To 8
+      If i > 0 Then i = InStr(i + 1, stmp, """estimize_revenue_mean""")
+      If i > 0 Then
+        sVal = AdvancedTrim(GetTextBetween(stmp, ":", ",", i))
+      End If
+        sVals(1) = sVals(2)
+        sVals(2) = sVals(3)
+        sVals(3) = sVals(4)
+        sVals(4) = sVal
+    Next j
+    For j = 1 To 4
+        sValsEstimize(j) = sVals(j)
+    Next j
+    
+    'Output results. If Estimize data exists, print it, otherwise print Wall St. data
+    For j = 1 To 4
+      If GetNumberYahoo(sValsEstimize(j)) <> 0 Then
+        shData.Cells(lRow, Range("rEstimizeRevenue_Pred").Column + j - 1).Value = GetNumberYahoo(sValsEstimize(j))
+      Else
+        shData.Cells(lRow, Range("rEstimizeRevenue_Pred").Column + j - 1).Value = GetNumberYahoo(sValsWS(j))
+      End If
+    Next j
+  End If
+  
+Exit_Label:
+  On Error Resume Next
+  Exit Sub
+Err_Handler:
+  MsgBox Err.Description, vbCritical, "GetDataEstimize"
+  Resume Exit_Label
+End Sub
+
+Public Function ShiftEstimizeURL(sURL As String, lPeriods As Long) As String
+'Returns Estimnize URL with data shifted [lPeriods] quarters into the future
+  On Error GoTo Err_Handler
+  Dim lYear As Long, lQ As Long, i As Long, j As Long
+  
+  j = InStr(2, sURL, "/")
+  
+  lQ = CLng(Mid(sURL, j + 3, 1))
+  lYear = CLng(Mid(sURL, j + 5, 4))
+  For i = 1 To lPeriods
+    lQ = lQ + 1
+    If lQ = 5 Then
+        lQ = 1
+        lYear = lYear + 1
+    End If
+  Next i
+  
+  ShiftEstimizeURL = Left(sURL, j + 2) & CStr(lQ) & "-" & CStr(lYear) & Right(sURL, Len(sURL) - j - 8)
+  
+Exit_Label:
+  On Error Resume Next
+  Exit Function
+Err_Handler:
+  MsgBox Err.Description, vbCritical, "ShiftEstimizeURL"
+  Resume Exit_Label
+End Function
