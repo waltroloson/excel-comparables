@@ -1,0 +1,193 @@
+Option Explicit
+
+Public Sub GetDataGuruFocus(lRow As Long, sSymbol As String)
+  On Error GoTo Err_Handler
+  Dim i As Long, j As Long
+  Dim sURL As String, sHTML As String
+  Dim stmp As String, sVal As String
+  Dim sVals(5) As String, sVals2(5) As String
+  
+  'Quaterly EBITDA data
+  sURL = Replace(g_GuruFocusURL_EBITDA, "#symb#", sSymbol)
+  IENavigate g_IE, sURL
+  sHTML = g_IE.Document.body.innerHTML
+  
+  i = InStr(sHTML, "Quarterly Data</strong>")
+  If i > 0 Then i = InStr(i, sHTML, ">EBITDA<")
+  stmp = GetTextBetween(sHTML, "<td>", "</tr>", i)
+  i = 0
+  For j = 1 To 10
+    i = InStr(i + 1, stmp, "<strong>")
+    If i > 0 Then
+      sVal = AdvancedTrim(GetTextBetween(stmp, "<strong>", "</strong>", i))
+    Else
+      sVal = ""
+    End If
+    If j > 1 Then shData.Cells(lRow, Range("rGuruFocus_EBITDAQ").Column + j - 2).Value = GetNumberYahoo(sVal)
+  Next j
+  
+  
+  
+  sURL = Replace(g_GuruFocusBaseURL, "#symb#", sSymbol)
+  IENavigate g_IE, sURL
+  sHTML = g_IE.Document.body.innerHTML
+  sHTML = Replace(sHTML, """", "'")
+  'Issuance of Stock
+  GetDataGuruFocus_Quarters sHTML, lRow, "/term/Issuance_of_Stock/", "rGuruFocusIsSh_Q"
+  
+  'Repurchase of Stock
+  GetDataGuruFocus_Quarters sHTML, lRow, "/term/Repurchase_of_Stock/", "rGuruFocusRetSh_Q"
+  
+  'Cash Flow for Dividends
+  GetDataGuruFocus_Quarters sHTML, lRow, "/term/Dividends/", "rGuruFocusDiv_Q"
+  
+  'Net Issuance of Debt
+  GetDataGuruFocus_Quarters sHTML, lRow, "/term/Net Issuance of Debt/", "rGuruFocusNewDebt_Q"
+  
+  'Cash Flow from Operations
+  GetDataGuruFocus_Quarters sHTML, lRow, "/term/Cash Flow from Operations/", "rGuruFocusOA_Q"
+  
+  'Capital Expenditure
+  GetDataGuruFocus_Quarters sHTML, lRow, "/term/Cash Flow_CPEX/", "rGuruFocusCapEx_Q"
+  
+  
+  'Historical quarters 5-8 retrieved from different pages
+  'Cash Flow from Operations
+  sURL = Replace("http://www.gurufocus.com/term/Cash%20Flow%20from%20Operations/#symb#/Cash%252BFlow%252Bfrom%252BOperations/", "#symb#", sSymbol)
+  '#Explain Can you explain the IENavigate and g_IE.Document code. Is it part of creating an IE instance?
+  'I create instance of IE in ImportData sub
+  'Line Set g_IE = CreateObject("InternetExplorer.Application")
+  'IENavigate navigates IE to sURL and waits when page will be loaded
+  'After webpage was loaded I use g_IE.Document.body.innerHTML to get it's HTML code
+  '#Done
+  IENavigate g_IE, sURL
+  sHTML = g_IE.Document.body.innerHTML
+  GetDataGuruFocus_Quarters_58 sHTML, lRow, ">Cash Flow from Operations</td>", "rGuruFocusOA_Q_OLD"
+  
+  'Capital Expenditure
+  sURL = Replace("http://www.gurufocus.com/term/Cash%20Flow_CPEX/#symb#/Capital%252BExpenditure/", "#symb#", sSymbol)
+  IENavigate g_IE, sURL
+  sHTML = g_IE.Document.body.innerHTML
+  GetDataGuruFocus_Quarters_58 sHTML, lRow, ">Cash Flow_CPEX</td>", "rGuruFocusCapEx_Q_OLD"
+  
+'  'Net Income
+'  sURL = Replace("http://www.gurufocus.com/term/Net%20Income/#symb#/Net%252BIncome/", "#symb#", sSymbol)
+'  IENavigate g_IE, sURL
+'  sHTML = g_IE.Document.body.innerHTML
+'  GetDataGuruFocus_Quarters_58 sHTML, lRow, ">Net Income</td>", "rGuruFocusNI_Q_OLD"
+
+  'Gross Profit
+  sURL = Replace("http://www.gurufocus.com/term/Gross%20Profit/#symb#/Gross%252BProfit/", "#symb#", sSymbol)
+  IENavigate g_IE, sURL
+  sHTML = g_IE.Document.body.innerHTML
+  GetDataGuruFocus_Quarters_18 sHTML, lRow, ">Gross_Profit</td>", "rGuruFocusGP_Q_OLD"
+  
+  'Net Income
+  sURL = Replace("http://www.gurufocus.com/term/Net%20Income/#symb#/Net%252BIncome/", "#symb#", sSymbol)
+  IENavigate g_IE, sURL
+  sHTML = g_IE.Document.body.innerHTML
+  GetDataGuruFocus_Quarters_18 sHTML, lRow, ">Net Income</td>", "rGuruFocusNI_Q_OLD"
+  
+  'EBIT
+  sURL = Replace("http://www.gurufocus.com/term/Operating%20Income/#symb#/Operating%252BIncome/", "#symb#", sSymbol)
+  IENavigate g_IE, sURL
+  sHTML = g_IE.Document.body.innerHTML
+  GetDataGuruFocus_Quarters_18 sHTML, lRow, ">Operating Income</td>", "rGuruFocusEBIT_Q_OLD"
+  
+Exit_Label:
+  On Error Resume Next
+'  Set oHttp = Nothing
+  Exit Sub
+Err_Handler:
+  MsgBox Err.Description, vbCritical, "GetDataGuruFocus"
+  Resume Exit_Label
+End Sub
+
+Private Sub GetDataGuruFocus_Quarters(sHTML As String, lRow As Long, sSearchStr As String, sOutRange As String)
+'Gets data from GuruFocus HTML code for 5 quarters and prints the last 4 quarters into specified cells
+  On Error GoTo Err_Handler
+  Dim i As Long, j As Long, lCount As Long, lTo As Long
+  Dim sVals(5) As String
+  
+  lCount = 0
+  i = InStr(sHTML, sSearchStr)
+  If i > 0 Then i = InStr(i + 1, sHTML, "yesttm")
+  For j = 1 To 5
+    If i = 0 Then
+      sVals(j) = "0"
+    Else
+      i = InStr(i + 1, sHTML, "<div")
+      sVals(j) = AdvancedTrim(GetTextBetween(sHTML, ">", "<", i + 1))
+      lCount = lCount + 1
+    End If
+  Next j
+  
+  'Print results (maximum last 4 numbers)
+  lTo = IIf(lCount > 4, lCount - 3, 1)
+  For j = lCount To lTo Step -1
+    shData.Cells(lRow, Range(sOutRange).Column + 3 + j - lCount).Value = GetNumberYahoo(sVals(j))
+  Next j
+  
+Exit_Label:
+  On Error Resume Next
+  Exit Sub
+Err_Handler:
+  Debug.Print Err.Description
+  Resume Exit_Label
+End Sub
+
+Private Sub GetDataGuruFocus_Quarters_58(sHTML As String, lRow As Long, sSearchStr As String, sOutRange As String)
+'Gets data from GuruFocus HTML code for 5 quarters and prints the last 4 quarters into specified cells
+  On Error GoTo Err_Handler
+  Dim i As Long, j As Long, k As Long
+  Dim stmp As String
+  Dim sVal As String
+  
+  i = InStr(sHTML, "Quarterly Data</strong>")
+  If i > 0 Then i = InStr(i + 1, sHTML, sSearchStr)
+  If i > 0 Then
+    stmp = GetTextBetween(sHTML, "</td>", "</table>", i)
+    For j = 1 To 6
+      k = InStr(k + 1, stmp, "<strong>")
+      If j > 2 Then
+        If k > 0 Then sVal = GetTextBetween(stmp, "<strong>", "</strong>", k)
+        shData.Cells(lRow, Range(sOutRange).Column + j - 3).Value = GetNumberYahoo(RemoveTags(sVal))
+      End If
+    Next j
+  End If
+  
+Exit_Label:
+  On Error Resume Next
+  Exit Sub
+Err_Handler:
+  Debug.Print Err.Description
+  Resume Exit_Label
+End Sub
+
+Private Sub GetDataGuruFocus_Quarters_18(sHTML As String, lRow As Long, sSearchStr As String, sOutRange As String)
+'Gets data from GuruFocus HTML code for 8 quarters
+  On Error GoTo Err_Handler
+  Dim i As Long, j As Long, k As Long
+  Dim stmp As String
+  Dim sVal As String
+  
+  i = InStr(sHTML, "Quarterly Data</strong>")
+  If i > 0 Then i = InStr(i + 1, sHTML, sSearchStr)
+  If i > 0 Then
+    stmp = GetTextBetween(sHTML, "</td>", "</table>", i)
+    For j = 1 To 10
+      k = InStr(k + 1, stmp, "<strong>")
+      If j > 2 Then
+        If k > 0 Then sVal = GetTextBetween(stmp, "<strong>", "</strong>", k)
+        shData.Cells(lRow, Range(sOutRange).Column + j - 3).Value = GetNumberYahoo(RemoveTags(sVal))
+      End If
+    Next j
+  End If
+  
+Exit_Label:
+  On Error Resume Next
+  Exit Sub
+Err_Handler:
+  Debug.Print Err.Description
+  Resume Exit_Label
+End Sub
