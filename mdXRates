@@ -1,0 +1,44 @@
+Option Explicit
+Option Compare Text
+
+Public Sub GetAllCurrencies()
+  On Error GoTo Err_Handler
+  Dim oHttp As Object
+  Dim i As Long, j As Long
+  Dim sURL As String, sHTML As String, sVal As String
+  Dim lRows As Long, lRow As Long
+  
+  'Clear old data
+  lRows = shCurrencies.UsedRange.Rows.Count
+  If lRows > 1 Then Range(shCurrencies.Cells(2, 1), shCurrencies.Cells(lRows, 2)).ClearContents
+  
+  Set oHttp = CreateObject("MSXML2.XMLHTTP")
+  oHttp.Open "GET", "http://www.x-rates.com/table/?from=USD&amount=1", False
+  oHttp.Send
+  sHTML = oHttp.ResponseText
+  sHTML = Replace(sHTML, """", "'")
+  
+  i = InStr(sHTML, ">Alphabetical order<")
+  lRow = 2
+  If i > 0 Then
+    j = InStr(i, sHTML, "/graph/?from=USD")
+    While j > 0
+      sVal = AdvancedTrim(GetTextBetween(sHTML, "to=", "'", j))
+      shCurrencies.Cells(lRow, 1).Value = sVal
+      sVal = AdvancedTrim(GetTextBetween(sHTML, ">", "<", j))
+      shCurrencies.Cells(lRow, 2).Value = GetNumberYahoo(sVal)
+      
+      lRow = lRow + 1
+      j = InStr(j, sHTML, "</tr>")
+      If j > 0 Then j = InStr(j, sHTML, "/graph/?from=USD")
+    Wend
+  End If
+  
+Exit_Label:
+  On Error Resume Next
+  Set oHttp = Nothing
+  Exit Sub
+Err_Handler:
+  MsgBox Err.Description, vbCritical, "GetAllCurrencies"
+  Resume Exit_Label
+End Sub
