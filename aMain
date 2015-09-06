@@ -96,6 +96,9 @@ Public Sub ImportData()
     End If
   Next i
   
+  'Get exchange rates
+  GetAllCurrencies
+  
 'Error handling
 'Resets all things to default if error occurs
 Exit_Label:
@@ -273,4 +276,50 @@ Public Function RemoveTags(sInput As String) As String
 
   Set RegEx = Nothing
 
+End Function
+
+Public Sub HighLightNamedRanges()
+  On Error GoTo Err_Handler
+  Dim i As Long
+  Dim sNotPainted As String, sPainted As String
+  Dim sName As String, sRef As String
+  Dim sOut As String
+  Dim sMenu1 As String, sMenu2 As String
+  
+  Application.Cursor = xlWait
+  
+  sMenu1 = "=" & shMenu.Name
+  sMenu2 = "='" & shMenu.Name & "'"
+  
+  For i = 1 To ThisWorkbook.Names.Count
+    sName = ThisWorkbook.Names(i).Name
+    sRef = ThisWorkbook.Names(i).RefersTo
+    If Left(sRef, Len(sMenu1)) <> sMenu1 And Left(sRef, Len(sMenu2)) <> sMenu2 And Left(sName, 13) <> "_xlfn.IFERROR" Then
+        If HighLightRange(sName) Then
+          sPainted = sPainted & sName & vbCrLf
+        Else
+          sNotPainted = sNotPainted & sName & vbCrLf
+        End If
+    End If
+  Next i
+  
+  If sNotPainted <> "" Then sOut = sOut & "Following ranges could not be painted:" & vbCrLf & sNotPainted & vbCrLf
+  If sPainted <> "" Then sOut = sOut & "Following ranges were painted:" & vbCrLf & sPainted & vbCrLf
+  
+  MsgBox sOut, vbInformation
+  
+Exit_Label:
+  On Error Resume Next
+  Application.Cursor = xlDefault
+  Exit Sub
+Err_Handler:
+  MsgBox Err.Description, vbCritical, "HighLightNamedRanges"
+  Resume Exit_Label
+End Sub
+
+Public Function HighLightRange(sName As String) As Boolean
+  On Error Resume Next
+  
+  ThisWorkbook.Names(sName).RefersToRange.Interior.Color = RGB(217, 217, 217)
+  HighLightRange = (Err.Number = 0)
 End Function
