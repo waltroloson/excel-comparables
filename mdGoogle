@@ -1,4 +1,5 @@
 Option Explicit
+Option Compare Text
 
 Public Sub GetDataGoogle(lRow As Long, sSymbol As String)
   On Error GoTo Err_Handler
@@ -70,61 +71,6 @@ Public Sub GetDataGoogle(lRow As Long, sSymbol As String)
     End If
   Next j
   
-'  '"Quarterly Data" Line Net Income
-'  stmp = GetTextBetween(sIS_Q, "Net Income" & vbLf, "</tr>")
-'  i = 0
-'  For j = 1 To 4
-'    i = InStr(i + 1, stmp, "<td")
-'    If i > 0 Then
-'      sVal = AdvancedTrim(GetTextBetween(stmp, ">", "<", i))
-'      shData.Cells(lRow, Range("rGoogleNI_Q").Column + 4 - j).Value = GetNumberYahoo(sVal)
-'    End If
-'  Next j
-  
-  'Net Income. The column will be the second column from the left. This will be the second oldest year of data.
-'  stmp = GetTextBetween(sIS_A, "Net Income" & vbLf, "</tr>")
-'  i = 0
-'  For j = 1 To 2
-'    i = InStr(i + 1, stmp, "<td")
-'    If i > 0 And j = 2 Then
-'      sVal = AdvancedTrim(GetTextBetween(stmp, ">", "<", i))
-'      shData.Cells(lRow, Range("rGoogleNI_A").Column).Value = GetNumberYahoo(sVal)
-'    End If
-'  Next j
-  
-'  '"Quarterly Data" Line Operating Income
-'  stmp = GetTextBetween(sIS_Q, "Operating Income" & vbLf, "</tr>")
-'  i = 0
-'  For j = 1 To 4
-'    i = InStr(i + 1, stmp, "<td")
-'    If i > 0 Then
-'      sVal = AdvancedTrim(GetTextBetween(stmp, ">", "<", i))
-'      shData.Cells(lRow, Range("rGoogleOI_Q").Column + 4 - j).Value = GetNumberYahoo(sVal)
-'    End If
-'  Next j
-  
-'  'Operating Income. The column will be the second column from the left. This will be the second oldest year of data.
-'  stmp = GetTextBetween(sIS_A, "Operating Income" & vbLf, "</tr>")
-'  i = 0
-'  For j = 1 To 2
-'    i = InStr(i + 1, stmp, "<td")
-'    If i > 0 And j = 2 Then
-'      sVal = AdvancedTrim(GetTextBetween(stmp, ">", "<", i))
-'      shData.Cells(lRow, Range("rGoogleOI_A").Column).Value = GetNumberYahoo(sVal)
-'    End If
-'  Next j
-  
-  'Cash from Operating Activities
-'  stmp = GetTextBetween(sCF_A, "Cash from Operating Activities" & vbLf, "</tr>")
-'  i = 0
-'  For j = 1 To 2
-'    i = InStr(i + 1, stmp, "<td")
-'    If i > 0 And j = 2 Then
-'      sVal = AdvancedTrim(GetTextBetween(stmp, ">", "<", i))
-'      shData.Cells(lRow, Range("rGoogleCFOA_A").Column).Value = GetNumberYahoo(sVal)
-'    End If
-'  Next j
-  
   'Income Statement. Diluted Weighted Average Shares. Q
   stmp = GetTextBetween(sIS_Q, "Diluted Weighted Average Shares" & vbLf, "</tr>")
   i = 0
@@ -159,16 +105,15 @@ Public Sub GetDataGoogle(lRow As Long, sSymbol As String)
     End If
   Next j
   
-  'Cash from Operating Activities
-'  stmp = GetTextBetween(sCF_A, "Capital Expenditures" & vbLf, "</tr>")
-'  i = 0
-'  For j = 1 To 2
-'    i = InStr(i + 1, stmp, "<td")
-'    If i > 0 And j = 2 Then
-'      sVal = AdvancedTrim(GetTextBetween(stmp, ">", "<", i))
-'      shData.Cells(lRow, Range("rGoogleCFCapEx_A").Column).Value = GetNumberYahoo(sVal)
-'    End If
-'  Next j
+  'Currency
+  i = InStr(sHTML, "(except for per share items)")
+  If i > 0 Then
+    j = InStrRev(sHTML, " of ", i)
+    If j > 0 Then
+      sVal = AdvancedTrim(GetTextBetween(sHTML, " ", " ", j + 1))
+      shData.Cells(lRow, Range("rCurrGoogle").Column).Value = sVal
+    End If
+  End If
   
 Exit_Label:
   On Error Resume Next
