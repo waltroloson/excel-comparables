@@ -1,4 +1,5 @@
 Option Explicit
+Option Compare Text
 
 Public Sub GetDataFinviz(lRow As Long, sSymbol As String)
   On Error GoTo Err_Handler
