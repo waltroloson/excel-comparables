@@ -1,4 +1,5 @@
-    Option Explicit
+Option Explicit
+Option Compare Text
 
 Public Sub GetDataYahoo(lRow As Long, sSymbol As String)
   On Error GoTo Err_Handler
@@ -140,6 +141,13 @@ Public Sub GetDataYahoo(lRow As Long, sSymbol As String)
   If Not IsNumeric(Right(sVal, 1)) And sVal <> "" Then sVal = Left(sVal, Len(sVal) - 1)
   shData.Cells(lRow, Range("rYahoo52Float").Column).Value = GetNumberYahoo(sVal) * dMult
   
+  'Currency
+  i = InStr(sHTML, "Currency in")
+  If i > 0 Then
+    sVal = GetTextBetween(sHTML, " ", ".", i + 10)
+    shData.Cells(lRow, Range("rCurrYahoo").Column).Value = sVal
+  End If
+  
 Exit_Label:
   On Error Resume Next
   Set oHttp = Nothing
@@ -147,5 +155,5 @@ Exit_Label:
   Exit Sub
 Err_Handler:
   MsgBox Err.Description, vbCritical, "GetDataYahoo"
-  Resume 'Exit_Label
+  Resume Exit_Label
 End Sub
