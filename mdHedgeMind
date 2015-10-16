@@ -1,4 +1,5 @@
 Option Explicit
+Option Compare Text
 
 Public Sub GetDataHedgeMind(lRow As Long, sSymbol As String)
   On Error GoTo Err_Handler
@@ -20,7 +21,7 @@ Public Sub GetDataHedgeMind(lRow As Long, sSymbol As String)
   sHTML = oHttp.ResponseText
   
   'Number of funds
-  i = InStr(sHTML, "No. of Hedge Funds Owing")
+  i = InStr(sHTML, "No. of Hedge Funds Owning")
   If i > 0 Then i = InStr(i, sHTML, "td0-right")
   
   sVal = AdvancedTrim(GetTextBetween(sHTML, ">", "<", i))
