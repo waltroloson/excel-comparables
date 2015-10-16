@@ -1,4 +1,5 @@
 Option Explicit
+Option Compare Text
 
 Public g_IE As Object
 Public Const g_IE_Is_Visible As Boolean = False
