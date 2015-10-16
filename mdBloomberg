@@ -1,4 +1,5 @@
 Option Explicit
+Option Compare Text
 
 Public Sub GetDataBloomberg(lRow As Long, sSymbol As String)
   On Error GoTo Err_Handler
@@ -69,6 +70,14 @@ Public Sub GetDataBloomberg(lRow As Long, sSymbol As String)
     shData.Cells(lRow, Range("rBloomberg_DIGY").Column).Value = GetNumberYahoo(AdvancedTrim(GetTextBetween(sHTML, ":", ",", i + 1))) / 100
   Else
     shData.Cells(lRow, Range("rBloomberg_DIGY").Column).Value = ""
+  End If
+  
+  'Currency
+  i = InStr(sHTML, "issuedCurrency")
+  If i > 0 Then
+    shData.Cells(lRow, Range("rCurrBloomberg").Column).Value = AdvancedTrim(GetTextBetween(sHTML, ":", ",", i + 1))
+  Else
+    shData.Cells(lRow, Range("rCurrBloomberg").Column).Value = ""
   End If
   
 Exit_Label:
