@@ -1,4 +1,5 @@
 Option Explicit
+Option Compare Text
 
 Public Sub GetDataGuruFocus(lRow As Long, sSymbol As String)
   On Error GoTo Err_Handler
@@ -107,25 +108,28 @@ Private Sub GetDataGuruFocus_Quarters(sHTML As String, lRow As Long, sSearchStr 
 'Gets data from GuruFocus HTML code for 5 quarters and prints the last 4 quarters into specified cells
   On Error GoTo Err_Handler
   Dim i As Long, j As Long, lCount As Long, lTo As Long
-  Dim sVals(5) As String
+  Dim sVals(4) As String
+  Dim sHTML_Short As String
   
   lCount = 0
   i = InStr(sHTML, sSearchStr)
   If i > 0 Then i = InStr(i + 1, sHTML, "yesttm")
-  For j = 1 To 5
+  sHTML_Short = GetTextBetween(sHTML, "yesttm", "tablerowajaxpage", i)
+  i = InStrRev(sHTML_Short, "<div")
+  For j = 1 To 4
     If i = 0 Then
       sVals(j) = "0"
     Else
-      i = InStr(i + 1, sHTML, "<div")
-      sVals(j) = AdvancedTrim(GetTextBetween(sHTML, ">", "<", i + 1))
-      lCount = lCount + 1
+'      i = InStr(i + 1, sHTML, "<div")
+      sVals(j) = AdvancedTrim(GetTextBetween(sHTML_Short, ">", "<", i + 1))
     End If
+    i = InStrRev(sHTML_Short, "<div", i - 1)
   Next j
   
   'Print results (maximum last 4 numbers)
   lTo = IIf(lCount > 4, lCount - 3, 1)
-  For j = lCount To lTo Step -1
-    shData.Cells(lRow, Range(sOutRange).Column + 3 + j - lCount).Value = GetNumberYahoo(sVals(j))
+  For j = 1 To 4
+    shData.Cells(lRow, Range(sOutRange).Column + 4 - j).Value = GetNumberYahoo(sVals(j))
   Next j
   
 Exit_Label:
