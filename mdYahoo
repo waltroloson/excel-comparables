@@ -148,6 +148,21 @@ Public Sub GetDataYahoo(lRow As Long, sSymbol As String)
     shData.Cells(lRow, Range("rCurrYahoo").Column).Value = sVal
   End If
   
+  'Analyst Estimates
+  sURL = Replace(g_YahooAE_URL, "#symb#", sSymbol)
+  oHttp.Open "GET", sURL, False
+  oHttp.Send
+  sHTML = oHttp.ResponseText
+  
+  i = InStr(sHTML, ">Avg. Estimate<")
+  YahooGetAnalystEstimates i, "yfnc_tabledata1", "rYahoo_EPS", lRow, sHTML, ">", "<", True
+  i = InStr(i + 1, sHTML, ">Avg. Estimate<")
+  YahooGetAnalystEstimates i, "yfnc_tabledata1", "rYahoo_Revenue", lRow, sHTML, ">", "<", True
+  i = InStr(sHTML, ">Earnings Est<")
+  YahooGetAnalystEstimates i, "yfnc_tablehead1", "rYahoo_EPSDate", lRow, sHTML, "br>", "<", False
+  i = InStr(sHTML, ">Revenue Est<")
+  YahooGetAnalystEstimates i, "yfnc_tabledata1", "rYahoo_RevenueDate", lRow, sHTML, "br>", "<", False
+  
 Exit_Label:
   On Error Resume Next
   Set oHttp = Nothing
@@ -155,5 +170,36 @@ Exit_Label:
   Exit Sub
 Err_Handler:
   MsgBox Err.Description, vbCritical, "GetDataYahoo"
+  Resume Exit_Label
+End Sub
+
+Public Sub YahooGetAnalystEstimates(lStart As Long, sLine As String, sRange As String, lRow As Long, sHTML As String, sLeft As String, sRight As String, bNumeric As Boolean)
+  On Error GoTo Err_Handler
+  Dim i As Long, lPos As Long
+  Dim sVal As String
+  Dim dMult As Double
+  
+  lPos = lStart
+  For i = 1 To 4
+    If lPos > 0 Then lPos = InStr(lPos + 1, sHTML, sLine)
+    If lPos > 0 Then
+      sVal = GetTextBetween(sHTML, sLeft, sRight, lPos)
+      If bNumeric Then
+        dMult = 1
+        If Right(sVal, 1) = "B" Then dMult = 10 ^ 9
+        If Right(sVal, 1) = "M" Then dMult = 10 ^ 6
+        If Not IsNumeric(Right(sVal, 1)) And sVal <> "" Then sVal = Left(sVal, Len(sVal) - 1)
+        shData.Cells(lRow, Range(sRange).Column + i - 1).Value = GetNumberYahoo(sVal) * dMult
+      Else
+        shData.Cells(lRow, Range(sRange).Column + i - 1).Value = sVal
+      End If
+    End If
+  Next i
+  
+Exit_Label:
+  On Error Resume Next
+  Exit Sub
+Err_Handler:
+  Debug.Print Err.Description
   Resume Exit_Label
 End Sub
