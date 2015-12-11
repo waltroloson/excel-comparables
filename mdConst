@@ -4,13 +4,14 @@ Option Explicit
 'Best place to change the Url if need be or add new URL's for new sources
 Public Const g_YahooURL_CSV As String = "http://download.finance.yahoo.com/d/quotes.csv?s=#symb#&f=cr5j1l1j4e7"
 Public Const g_YahooURL As String = "http://finance.yahoo.com/q/ks?s=#symb#"
+Public Const g_YahooAE_URL As String = "http://finance.yahoo.com/q/ae?s=#symb#"
 
 Public Const g_GoogleURL As String = "https://www.google.com/finance?q=#symb#&fstype=ii"
 
 Public Const g_EstimizeURL As String = "http://www.estimize.com/#symb##chart=table"
 Public Const g_EstimizeBaseURL As String = "http://www.estimize.com"
 
-Public Const g_HedgeMindURL As String = "http://hedgemind.com/stocks/#symb#"
+Public Const g_HedgeMindURL As String = "https://hedgemind.com/stocks/symbol?t=#symb#"
 Public Const g_GuruFocusBaseURL As String = "www.gurufocus.com/financials/#symb#"
 Public Const g_GuruFocusURL As String = "http://www.gurufocus.com/financials/#symb##is"
 Public Const g_GuruFocusURL_EBITDA As String = "http://www.gurufocus.com/term/EBITDA/#symb#/Earnings%2BBefore%2BDepreciation%2Band%2BAmortization/"

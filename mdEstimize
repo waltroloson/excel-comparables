@@ -30,7 +30,7 @@ Public Sub GetDataEstimize(lRow As Long, sSymbol As String)
     shData.Cells(lRow, Range("rEstimizeEPS_Actual").Column + j - 1).Value = GetNumberYahoo(sVal)
   Next j
   
-  'Revenue Actual
+'  'Revenue Actual
   For i = 1 To 8
     dVals(i) = 0
   Next i
