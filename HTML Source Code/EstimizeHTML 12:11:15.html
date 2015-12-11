@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<head>
+<meta charset='utf-8'>
+<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+<title>IBKR - Interactive Brokers Group, Inc. Crowdsourced Earnings Estimates - Estimize</title>
+<meta content='width=device-width' name='viewport'>
+<link rel="stylesheet" media="screen" href="/assets/application-2f24cb8405dcd79bb2b4219b527e9cc0.css" />
+<!--[if IE 8]>
+<link rel="stylesheet" media="screen" href="/assets/ie8-592b4f7c79840aa8093694c64ca1f73b.css" />
+<![endif]-->
+<script src="/assets/application-b82a80e5b1b54784017ef980f63c49d4.js" debug="false"></script>
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="sFbCNO7iOGafSEeKP5waxxSBWrKKmajbS5pkYKMPrGgkgbqU26vyLaQYd94JctnaQ4VfR4UB3P2SXFqwmbHmzA==" />
+<!-- start Mixpanel -->
+<script type="text/javascript">
+  (function(e,b){if(!b.__SV){var a,f,i,g;window.mixpanel=b;a=e.createElement("script");a.type="text/javascript";a.async=!0;a.src=("https:"===e.location.protocol?"https:":"http:")+'//cdn.mxpnl.com/libs/mixpanel-2.2.min.js';f=e.getElementsByTagName("script")[0];f.parentNode.insertBefore(a,f);b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!== typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.track_charge people.clear_charges people.delete_user".split(" ");for(g=0;g<i.length;g++)f(c,i[g]); b._i.push([a,e,d])};b.__SV=1.2}})(document,window.mixpanel||[]);
+
+  mixpanel.init("f82b8a8534252e79bda618ee454e6a33", {
+    loaded: function() {
+      Estimize.Tracking.initialize();
+
+    mixpanel.register_once({ 'experiment:why_ei_estimate': 'track' });
+mixpanel.register_once({ 'experiment:why_estimate': 'contribute' });
+
+      mixpanel.track('Logged Out Estimate Form View');
+
+  var eventProperties = {
+    'release': 'IBKR 2015 Q4',
+    'ticker': 'IBKR',
+    'fiscal_year': '2015',
+    'fiscal_quarter': '4',
+    'source': '',
+  }
+
+    mixpanel.track('Release View', $.extend({}, eventProperties, {
+      'mp_note': 'IBKR 2015 Q4',
+      'state': 'open'
+    }));
+
+
+    }
+  });
+
+</script>
+<!-- end Mixpanel -->
+
+
+<!-- Start AdRoll -->
+<script type="text/javascript">
+adroll_adv_id = "EWIYUCVLS5FNDDDXGWLLZD";
+adroll_pix_id = "ZDPSQC7AMZGV7JPP44CVTB";
+(function () {
+  var oldonload = window.onload;
+  window.onload = function(){
+    __adroll_loaded=true;
+    var scr = document.createElement("script");
+    var host = (("https:" == document.location.protocol) ? "https://s.adroll.com" : "http://a.adroll.com");
+    scr.setAttribute('async', 'true');
+    scr.type = "text/javascript";
+    scr.src = host + "/j/roundtrip.js";
+    ((document.getElementsByTagName('head') || [null])[0] ||
+     document.getElementsByTagName('script')[0].parentNode).appendChild(scr);
+    if(oldonload){oldonload()}};
+}());
+
+</script>
+<!-- End AdRoll -->
+
+<!-- Start Twitter Ads -->
+<script src="//platform.twitter.com/oct.js" type="text/javascript"></script>
+
+<!-- LeaguesRemarketing tag -->
+<script type="text/javascript">twttr.conversion.trackPid('l6tlb', { tw_sale_amount: 0, tw_order_quantity: 0 });</script>
+<noscript>
+  <img height="1" width="1" style="display:none;" alt="" src="https://analytics.twitter.com/i/adsct?txn_id=l6tlb&p_id=Twitter&tw_sale_amount=0&tw_order_quantity=0" />
+  <img height="1" width="1" style="display:none;" alt="" src="//t.co/i/adsct?txn_id=l6tlb&p_id=Twitter&tw_sale_amount=0&tw_order_quantity=0" />
+</noscript>
+<!-- End Twitter Ads -->
+
+<!-- start Google Analytics -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-26062630-1']);
+  _gaq.push(['_setDomainName', 'estimize.com']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!-- end Google Analytics -->
+
+<!-- start Facebook -->
+<script>(function() {
+  var _fbq = window._fbq || (window._fbq = []);
+  if (!_fbq.loaded) {
+    var fbds = document.createElement('script');
+    fbds.async = true;
+    fbds.src = '//connect.facebook.net/en_US/fbds.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(fbds, s);
+    _fbq.loaded = true;
+  }
+  _fbq.push(['addPixelId', '323590557796570']);
+})();
+window._fbq = window._fbq || [];
+window._fbq.push(['track', 'PixelInitialized', {}]);
+</script>
+<noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?id=323590557796570&amp;ev=NoScript" /></noscript>
+<!-- end Facebook -->
+
+<!-- Start BounceX tag -->
+<script>
+(function(d) {
+  var e = d.createElement('script');
+  e.src = d.location.protocol + '//tag.bounceexchange.com/1478/i.js';
+  e.async = true;
+  d.getElementsByTagName("head")[0].appendChild(e);
+}(document));
+</script>
+<!-- End BounceX tag -->
+
+<!-- Start Yahoo Ad tag -->
+<script type="application/javascript">(function(w,d,t,r,u){w[u]=w[u]||[];w[u].push({'projectId':'10001780952788','properties':{'pixelId':'421894'}});var s=d.createElement(t);s.src=r;s.async=true;s.onload=s.onreadystatechange=function(){var y,rs=this.readyState,c=w[u];if(rs&&rs!="complete"&&rs!="loaded"){return}try{y=YAHOO.ywa.I13N.fireBeacon;w[u]=[];w[u].push=function(p){y([p])};y(c)}catch(e){}};var scr=d.getElementsByTagName(t)[0],par=scr.parentNode;par.insertBefore(s,scr)})(window,document,"script","https://s.yimg.com/wi/ytc.js","dotq");</script>
+<!-- End Yahoo Ad tag -->
+
+<!-- Start Marketo tag -->
+<script type="text/javascript">
+(function() {
+  var didInit = false;
+  function initMunchkin() {
+    if(didInit === false) {
+      didInit = true;
+      Munchkin.init('120-YQR-533');
+    }
+  }
+  var s = document.createElement('script');
+  s.type = 'text/javascript';
+  s.async = true;
+  s.src = '//munchkin.marketo.net/munchkin.js';
+  s.onreadystatechange = function() {
+    if (this.readyState == 'complete' || this.readyState == 'loaded') {
+      initMunchkin();
+    }
+  };
+  s.onload = initMunchkin;
+  document.getElementsByTagName('head')[0].appendChild(s);
+})();
+</script>
+<!-- End Marketo tag -->
+
+
+
+<!-- start Olark -->
+<script data-cfasync="false" type='text/javascript'>
+/*<![CDATA[*/window.olark||(function(c){var f=window,d=document,l=f.location.protocol=="https:"?"https:":"http:",z=c.name,r="load";var nt=function(){
+f[z]=function(){
+(a.s=a.s||[]).push(arguments)};var a=f[z]._={
+},q=c.methods.length;while(q--){(function(n){f[z][n]=function(){
+f[z]("call",n,arguments)}})(c.methods[q])}a.l=c.loader;a.i=nt;a.p={
+0:+new Date};a.P=function(u){
+a.p[u]=new Date-a.p[0]};function s(){
+a.P(r);f[z](r)}f.addEventListener?f.addEventListener(r,s,false):f.attachEvent("on"+r,s);var ld=function(){function p(hd){
+hd="head";return["<",hd,"></",hd,"><",i,' onl' + 'oad="var d=',g,";d.getElementsByTagName('head')[0].",j,"(d.",h,"('script')).",k,"='",l,"//",a.l,"'",'"',"></",i,">"].join("")}var i="body",m=d[i];if(!m){
+return setTimeout(ld,100)}a.P(1);var j="appendChild",h="createElement",k="src",n=d[h]("div"),v=n[j](d[h](z)),b=d[h]("iframe"),g="document",e="domain",o;n.style.display="none";m.insertBefore(n,m.firstChild).id=z;b.frameBorder="0";b.id=z+"-loader";if(/MSIE[ ]+6/.test(navigator.userAgent)){
+b.src="javascript:false"}b.allowTransparency="true";v[j](b);try{
+b.contentWindow[g].open()}catch(w){
+c[e]=d[e];o="javascript:var d="+g+".open();d.domain='"+d.domain+"';";b[k]=o+"void(0);"}try{
+var t=b.contentWindow[g];t.write(p());t.close()}catch(x){
+b[k]=o+'d.write("'+p().replace(/"/g,String.fromCharCode(92)+'"')+'");d.close();'}a.P(2)};ld()};nt()})({
+loader: "static.olark.com/jsclient/loader0.js",name:"olark",methods:["configure","extend","declare","identify"]});
+
+/* custom configuration goes here (www.olark.com/documentation) */
+
+olark.identify('3368-235-10-3477');/*]]>*/</script>
+<noscript><a href="https://www.olark.com/site/3368-235-10-3477/contact" title="Contact us" target="_blank">Questions? Feedback?</a> powered by <a href="http://www.olark.com?welcome" title="Olark live chat software">Olark live chat software</a></noscript>
+<!-- end Olark -->
+
+
+<link href='/favicon.ico' rel='shortcut icon'>
+<meta name="description" content="Earnings estimates for IBKR from thousands of professional and amateur analysts who contribute to a open, crowdsourced estimate data set." />
+<script type="text/javascript">var NREUMQ=NREUMQ||[];NREUMQ.push(["mark","firstbyte",new Date().getTime()]);</script></head>
+<body class='releases releases-page' id='releases_show'>
+<script>
+  $(function() {
+    Estimize.currentUser = new Estimize.User( {"bio":{},"settings":{},"user_tokens":{}} );
+  })
+</script>
+
+<header>
+<div class='container' id='top-navigation'>
+<a id="logo" href="/"><img alt="Estimize" height="15" width="87" src="/assets/logo/header-logo-fdf28010338e2981de36f6b5d1c7622b.png" /></a>
+<div class='site-navigation'>
+<ul>
+<li><a id="nav-item-calendar" class="site-nav-link" href="/calendar">Calendar</a></li>
+<li><a id="nav-item-browse" class="site-nav-link" href="/sectors">Equities</a></li>
+<li><a id="nav-item-economic-indicators" class="site-nav-link" href="/economic_indicators">Economics</a></li>
+<li><a id="nav-item-rankings" class="site-nav-link" href="/rankings">Rankings</a></li>
+<li><a id="nav-item-research" class="site-nav-link" href="http://blog.estimize.com">Research</a></li>
+<li><a id="nav-item-leagues" class="site-nav-link" href="/leagues">Leagues</a></li>
+<li>
+<a id="nav-item-screener" class="site-nav-link" href="/screener"><span class='new'>New</span>
+Screener
+</a></li>
+</ul>
+</div>
+<div class='authentication'>
+<a class="sign-up site-nav-link" type="Header" href="/users/sign_up">Sign Up</a>
+<a class="sign-in site-nav-link" href="/users/sign_in">Log In</a>
+</div>
+</div>
+<div class='container' id='ticker-bar'>
+<ul id='featured-releases'>
+<li class='ticker'>TRENDING</li>
+<li class='ticker'>
+<a title="BlackBerry" data-ticker="BBRY" data-tooltip-id="BBRY" data-tooltip-type="instrument" href="/bbry/fq3-2016">BBRY</a>
+</li>
+<li class='ticker'>
+<a title="Oracle Corporation" data-ticker="ORCL" data-tooltip-id="ORCL" data-tooltip-type="instrument" href="/orcl/fq2-2016">ORCL</a>
+</li>
+<li class='ticker'>
+<a title="Nike Inc." data-ticker="NKE" data-tooltip-id="NKE" data-tooltip-type="instrument" href="/nke/fq2-2016">NKE</a>
+</li>
+<li class='ticker'>
+<a title="Alcoa, Inc." data-ticker="AA" data-tooltip-id="AA" data-tooltip-type="instrument" href="/aa/fq4-2015">AA</a>
+</li>
+<li class='ticker'>
+<a title="JPMorgan Chase &amp; Co." data-ticker="JPM" data-tooltip-id="JPM" data-tooltip-type="instrument" href="/jpm/fq4-2015">JPM</a>
+</li>
+<li class='ticker'>
+<a title="Intel Corporation" data-ticker="INTC" data-tooltip-id="INTC" data-tooltip-type="instrument" href="/intc/fq4-2015">INTC</a>
+</li>
+<li class='ticker'>
+<a title="The Goldman Sachs Group, Inc." data-ticker="GS" data-tooltip-id="GS" data-tooltip-type="instrument" href="/gs/fq4-2015">GS</a>
+</li>
+<li class='ticker'>
+<a title="Netflix, Inc." data-ticker="NFLX" data-tooltip-id="NFLX" data-tooltip-type="instrument" href="/nflx/fq4-2015">NFLX</a>
+</li>
+<li class='ticker'>
+<a title="International Business Machines Corp." data-ticker="IBM" data-tooltip-id="IBM" data-tooltip-type="instrument" href="/ibm/fq4-2015">IBM</a>
+</li>
+<li class='ticker'>
+<a title="eBay Inc." data-ticker="EBAY" data-tooltip-id="EBAY" data-tooltip-type="instrument" href="/ebay/fq4-2015">EBAY</a>
+</li>
+<li class='ticker'>
+<a title="Starbucks Corporation" data-ticker="SBUX" data-tooltip-id="SBUX" data-tooltip-type="instrument" href="/sbux/fq1-2016">SBUX</a>
+</li>
+<li class='ticker'>
+<a title="Micron Technology Inc." data-ticker="MU" data-tooltip-id="MU" data-tooltip-type="instrument" href="/mu/fq1-2016">MU</a>
+</li>
+<li class='ticker'>
+<a title="Microsoft Corporation" data-ticker="MSFT" data-tooltip-id="MSFT" data-tooltip-type="instrument" href="/msft/fq2-2016">MSFT</a>
+</li>
+<li class='ticker'>
+<a title="Apple Inc." data-ticker="AAPL" data-tooltip-id="AAPL" data-tooltip-type="instrument" href="/aapl/fq1-2016">AAPL</a>
+</li>
+<li class='ticker'>
+<a title="Yahoo! Inc." data-ticker="YHOO" data-tooltip-id="YHOO" data-tooltip-type="instrument" href="/yhoo/fq4-2015">YHOO</a>
+</li>
+<script>
+  $(function() {
+    mixpanel.track_links("#featured-releases li.ticker a", "Ticker Bar Click", function(elt) {
+      return { ticker: $(elt).data('ticker') };
+    });
+  });
+</script>
+</ul>
+<input type="text" name="search" id="search" placeholder="Search company or analyst" autocomplete="off" />
+<script>
+  $(function() {
+    new Estimize.Search.AppView({ el: $("#search"), className: "search" });
+  });
+</script>
+</div>
+</header>
+<div class='is-default' id='sidebar-toggle'>
+<div class='is-default' id='sidebar-toggle-tab'></div>
+</div>
+<div class='is-default' id='sidebar-wrapper'>
+<div id='sidebar'>
+<div class='sidebar-header'>
+<div class='alert' id='sidebar-alert'>
+<p class='tooltip-message'>
+<a class="sign-up" href="/users/sign_up">Sign up</a>
+or
+<a class="sign-in" href="/users/sign_in">log in</a>
+to track your followed stocks.
+</p>
+<div class='alert-tail'></div>
+</div>
+</div>
+<div class='loggedout' id='sidebar-stocks'>
+<div class='sidebar-list-title'>
+<div class='sidebar-rel-company'>Recently Viewed</div>
+<div class='sidebar-rel-report-date'>
+Reports
+</div>
+</div>
+<div class='stock-list recommended-coverage' id='sidebar-stock-list'></div>
+<div class='sidebar-list-title'>
+<div class='sidebar-rel-company'>Popular</div>
+</div>
+<div class='stock-list recommended-coverage' id='sidebar-popular-list'></div>
+</div>
+</div>
+</div>
+<script>
+  $(document).ready(function() {
+    Estimize.sidebarApp = new Estimize.Sidebar.AppView({
+      el: "#sidebar-wrapper"
+    });
+  
+    new Estimize.Sidebar.LoggedOutListView({
+      el: "#sidebar-stock-list",
+      collection: new Estimize.Sidebar.RecentlyViewedReleaseCollection([{"reports_at":1453978800000,"slug":"baba","name":"BABA","last_viewed":1449821006000,"equity":true},{"reports_at":1454014800000,"slug":"amzn","name":"AMZN","last_viewed":1449825838000,"equity":true},{"reports_at":1453237200000,"slug":"ibkr","name":"IBKR","last_viewed":1449825855000,"equity":true}])
+    });
+  
+    new Estimize.Sidebar.LoggedOutListView({
+      el: '#sidebar-popular-list',
+      collection: new Estimize.Sidebar.PopularReleaseCollection([{"slug":"bbry","equity":true,"reports_at":1450436400000,"name":"BBRY"},{"slug":"orcl","equity":true,"reports_at":1450299600000,"name":"ORCL"},{"slug":"nke","equity":true,"reports_at":1450818000000,"name":"NKE"},{"slug":"aa","equity":true,"reports_at":1452546000000,"name":"AA"},{"slug":"jpm","equity":true,"reports_at":1452769200000,"name":"JPM"},{"slug":"intc","equity":true,"reports_at":1452805200000,"name":"INTC"},{"slug":"gs","equity":true,"reports_at":1452855600000,"name":"GS"},{"slug":"nflx","equity":true,"reports_at":1453237200000,"name":"NFLX"},{"slug":"ibm","equity":true,"reports_at":1453237200000,"name":"IBM"},{"slug":"ebay","equity":true,"reports_at":1453323600000,"name":"EBAY"},{"slug":"sbux","equity":true,"reports_at":1453410000000,"name":"SBUX"},{"slug":"mu","equity":true,"reports_at":1452027600000,"name":"MU"},{"slug":"msft","equity":true,"reports_at":1453755600000,"name":"MSFT"},{"slug":"aapl","equity":true,"reports_at":1453842000000,"name":"AAPL"},{"slug":"yhoo","equity":true,"reports_at":1453842000000,"name":"YHOO"},{"slug":"qcom","equity":true,"reports_at":1453928400000,"name":"QCOM"},{"slug":"fb","equity":true,"reports_at":1453928400000,"name":"FB"},{"slug":"f","equity":true,"reports_at":1453978800000,"name":"F"},{"slug":"amzn","equity":true,"reports_at":1454014800000,"name":"AMZN"},{"slug":"v","equity":true,"reports_at":1454014800000,"name":"V"}]
+  )
+    });
+  });
+</script>
+
+<div class='is-default main-content-wrapper'>
+<div class='before-main-wrapper'>
+
+
+</div>
+<div class='container' id='main-content'>
+<div class='open logged-out' id='instrument-wrap'>
+<div class='followable-header'>
+<h1 class='followable-header-title'>
+<a href="/ibkr">IBKR</a>
+</h1>
+<p class='followable-header-description'>
+<a href="/ibkr">Interactive Brokers Group, Inc.</a>
+</p>
+<p>
+<span itemscope='' itemtype='http://data-vocabulary.org/Breadcrumb'>
+<a itemprop="url" href="/sectors/financials"><span itemprop='title'>Financials</span>
+</a>&rsaquo;
+</span>
+<span itemscope='' itemtype='http://data-vocabulary.org/Breadcrumb'>
+<a itemprop="url" href="/sectors/financials/industries/consumer-finance"><span itemprop='title'>Consumer Finance</span>
+</a></span>
+</p>
+</div>
+<nav id='release-navigation'>
+<div class='release'>
+<span class='release-name'>
+<a href="/ibkr/fq4-2015">FQ4 ‘15</a>
+<img height="15" width="12" class="blind-estimate-experiment-release-navigation" src="/assets/icons/blind-lock-c7c5a7e0d4b3e3d1eddedca8416bab8d.png" alt="Blind lock" />
+</span>
+<span class='reporting'>
+estimated to report
+<span class='date'>01/19/16 <abbr title="After Market Closes">AMC</abbr></span>
+</span>
+</div>
+<a class="previous quarter-navigation" title="Previous" href="/ibkr/fq3-2015">‹</a>
+<a class="next quarter-navigation" title="Next" href="/ibkr/fq1-2016">›</a>
+</nav>
+</div>
+<div class='logged-out without_estimate_form blind-estimate-experiment-charts' id='chart-navigation'>
+<h3 class='chart-navigation-header'>Chart Type:</h3>
+<ul id='charts-menu'></ul>
+<h3 class='chart-navigation-header chart-submenu-header'>Display:</h3>
+<ul id='chart-sub-menu'></ul>
+<div id='chart-legend'></div>
+</div>
+<div class='logged-out without_estimate_form blind-estimate-experiment-charts' id='charts-container'>
+<div class='shareable-charts-container'>
+<ul class='shareable-charts'>
+<li class='share'>
+<a href="#"><img src="/assets/icons/icon-share-552cb52ee5d81843aad44db475bd0e0f.png" alt="Icon share" />
+Share
+</a><ul id='share-via'>
+<li><a class="twitter share not-authorized" data-network="twitter" href="/users/auth/twitter">Share on Twitter</a></li>
+<li><a class="linkedin share not-authorized" data-network="linkedin" href="/users/auth/linkedin">Share on Linkedin</a></li>
+<li><a class="stocktwits share not-authorized" data-network="stocktwits" href="/users/auth/stocktwits">Share on Stocktwits</a></li>
+<li><a class="embed" href="#">Embed</a></li>
+<li><a class="save" href="#">Save Image</a></li>
+</ul>
+</li>
+<li class='export'>
+<a href="/api"><img src="/assets/icons/icon-download-5fe5798b606e03d0c71183906b472bae.png" alt="Icon download" />
+Export
+</a></li>
+</ul>
+</div>
+<div class='blind-estimate-experiment-charts-message'>
+<img height="15" width="12" class="blind-estimate-experiment-charts-message-icon" src="/assets/icons/blind-lock-c7c5a7e0d4b3e3d1eddedca8416bab8d.png" alt="Blind lock" />
+Make your estimate to access expectations for this quarter.
+<a data-blind-estimate-experiment-modal="true" href="/ibkr">(Why?)</a>
+</div>
+</div>
+<div class='linked-table-container open' id='estimates'>
+<h2 id='estimates-title'>
+All
+IBKR
+Estimates for
+FQ4 2015
+</h2>
+<a class="release-rankings" href="/rankings?instrument_id=IBKR&amp;season=">View overall analysts rankings for IBKR</a>
+<p id='estimate-count'>
+Showing
+<strong><span class="current">2</span>/2</strong>
+</p>
+<div class='linked-table'>
+<div class='thead'>
+<div class='tr'>
+<div class="estimates-tbl-column-chart th unsortable">Chart</div>
+<a class="analyst th sortable" data-sort-column-name="username" data-sort-direction="desc" data-remote="true" href="/ibkr?direction=desc&amp;sort=username">Analyst</a>
+<a class=" th sortable" data-sort-column-name="eps" data-sort-direction="desc" data-remote="true" href="/ibkr?direction=desc&amp;sort=eps">EPS</a>
+<a class=" th sortable" data-sort-column-name="revenue" data-sort-direction="desc" data-remote="true" href="/ibkr?direction=desc&amp;sort=revenue">Revenue</a>
+<a class=" th sortable selected desc" data-sort-column-name="created_at" data-sort-direction="asc" data-remote="true" href="/ibkr?direction=asc&amp;sort=created_at">Last Revised</a>
+<div class="statement th unsortable">Analysis</div>
+<div class="flag th unsortable"><img width="15" height="18" src="/assets/icons/reliability-flag-85b61762e0be670af32f22e094005d03.png" alt="Reliability flag" /></div>
+</div>
+
+</div>
+<div class='tbody' id='consensus'>
+<div class='tr estimize-consensus'>
+<div class='td estimates-tbl-column-chart'></div>
+<div class='td analyst'>
+Estimize Consensus
+<img height="15" width="12" class="blind-estimate-experiment-lock" src="/assets/icons/blind-lock-c7c5a7e0d4b3e3d1eddedca8416bab8d.png" alt="Blind lock" />
+<p class='secondary'>
+No estimates included (3 needed to create consensus)
+</p>
+</div>
+<div class='td eps'>
+<a class="blind-estimate-experiment-consensus-numbers" data-blind-estimate-experiment-modal="true" href="/ibkr">Estimate
+<br>
+to view
+</a></div>
+<div class='td revenue'>
+<a class="blind-estimate-experiment-consensus-numbers" data-blind-estimate-experiment-modal="true" href="/ibkr">Estimate
+<br>
+to view
+</a></div>
+<div class='td published-at'>
+
+</div>
+<div class='td statement'></div>
+<div class='td flag'></div>
+</div>
+<div class='tr wall-street-consensus'>
+<div class='td estimates-tbl-column-chart'></div>
+<div class='td analyst'>Wall St Consensus</div>
+<div class='td eps'>0.33</div>
+<div class='td revenue'>350.00</div>
+<div class='td published-at'>
+
+</div>
+<div class='td statement'></div>
+<div class='td flag'></div>
+</div>
+</div>
+</div>
+</div>
+<div class='blind-estimate-experiment-crowd-message'>
+<h2 class='blind-estimate-experiment-crowd-header'>
+<img class="blind-estimate-experiment-crowd-message-icon" src="/assets/icons/icon-lock-7012449498e0c53dd84020eeaabbd956.png" alt="Icon lock" />
+Make your estimate
+</h2>
+<p>
+<strong>We ask that you estimate prior to viewing the Estimize consensus to preserve the independence of your estimate.</strong>
+Estimates from individuals of ALL backgrounds and methods are needed to build the most accurate and representative data set possible.
+</p>
+<p>
+By estimating, you'll be joining a community of
+15,033
+analysts who have built an estimates data set that is more accurate than Wall Street 70% of the time.
+</p>
+<p class='blind-estimate-experiment-crowd-blog-link'>
+<a href="http://blog.estimize.com/post/133094378977/why-the-estimize-platform-is-blind">Learn more on our blog »</a>
+</p>
+</div>
+<div class='shareable-charts-embed-modal reveal-modal'>
+<a class='close-reveal-modal'>&#215;</a>
+<h2>Embed This Chart</h2>
+<div class='code'><img src="/assets/icons/icon-brackets-16b1f167a0f2f18e58d9f9a00e5571c6.png" alt="Icon brackets" /></div>
+<p>
+<strong>Copy & paste this into the HTML of your site:</strong>
+</p>
+<textarea class='chart' width='300px'></textarea>
+</div>
+
+<script>
+  $(function() {
+    var origin          = 'releases show';
+    var estimate        = new Estimize.Estimate( $.extend(true, {}, { origin : origin }, {"instrumentId":2370,"instrumentSlug":"ibkr","releaseId":126147,"releaseSlug":"fq4-2015","id":null,"eps":0.33,"revenue":350.0,"username":null,"statement":"","wallstreetRevenue":350.0,"shares":{"shares_hash":{"linkedin":null,"stocktwits":null,"twitter":null}},"createdAt":null,"persisted":false,"rank":" of 0","points":null,"eps_points":null,"revenue_points":null,"errorRanges":{"eps":{"low":-0.0577467116725795,"high":0.678996711672579},"revenue":{"low":330.75,"high":405.75}},"sector":"financials","season":"2016-winter"} ));
+    var instrument      = new Estimize.Following.Followable( {"ticker":"IBKR","className":"Instrument","id":"ibkr","name":"Interactive Brokers Group, Inc.","url":"/ibkr"} );
+    var release         = new Estimize.Release( {"id":126147,"name":"FQ4 2015","ticker":"IBKR","eps":null,"revenue":null,"eps_flagging_range":[-0.06,0.68],"revenue_flagging_range":[330.75,405.75],"estimize_eps_mean":null,"estimize_eps_range":[],"estimize_revenue_mean":null,"estimize_revenue_range":[],"wallstreet_eps_mean":0.33,"wallstreet_eps_range":[0.32,0.33],"wallstreet_revenue_mean":350.0,"wallstreet_revenue_range":[350.0,350.0],"guidance_eps_mean":null,"guidance_eps_range":[],"guidance_revenue_mean":null,"guidance_revenue_range":[],"year_over_year_eps":null,"year_over_year_revenue":null,"open":true,"reportsAt":1453237200000,"url":"/ibkr/fq4-2015"} );
+    var releases        = new Estimize.ReleaseCollection( [{"id":125472,"name":"FQ4 2013","ticker":"IBKR","eps":0.09,"revenue":249.9,"eps_flagging_range":[],"revenue_flagging_range":[],"estimize_eps_mean":null,"estimize_eps_range":[],"estimize_revenue_mean":null,"estimize_revenue_range":[],"wallstreet_eps_mean":0.19,"wallstreet_eps_range":[],"wallstreet_revenue_mean":null,"wallstreet_revenue_range":[],"guidance_eps_mean":null,"guidance_eps_range":[],"guidance_revenue_mean":null,"guidance_revenue_range":[],"year_over_year_eps":null,"year_over_year_revenue":null,"open":false,"reportsAt":1390320000000,"url":"/ibkr/fq4-2013"},{"id":125473,"name":"FQ1 2014","ticker":"IBKR","eps":0.35,"revenue":354.9,"eps_flagging_range":[],"revenue_flagging_range":[],"estimize_eps_mean":null,"estimize_eps_range":[],"estimize_revenue_mean":null,"estimize_revenue_range":[],"wallstreet_eps_mean":0.3,"wallstreet_eps_range":[],"wallstreet_revenue_mean":null,"wallstreet_revenue_range":[],"guidance_eps_mean":null,"guidance_eps_range":[],"guidance_revenue_mean":null,"guidance_revenue_range":[],"year_over_year_eps":null,"year_over_year_revenue":null,"open":false,"reportsAt":1397577600000,"url":"/ibkr/fq1-2014"},{"id":125474,"name":"FQ2 2014","ticker":"IBKR","eps":0.29,"revenue":309.3,"eps_flagging_range":[],"revenue_flagging_range":[],"estimize_eps_mean":null,"estimize_eps_range":[],"estimize_revenue_mean":null,"estimize_revenue_range":[],"wallstreet_eps_mean":0.29,"wallstreet_eps_range":[],"wallstreet_revenue_mean":null,"wallstreet_revenue_range":[],"guidance_eps_mean":null,"guidance_eps_range":[],"guidance_revenue_mean":null,"guidance_revenue_range":[],"year_over_year_eps":null,"year_over_year_revenue":null,"open":false,"reportsAt":1405440000000,"url":"/ibkr/fq2-2014"},{"id":125475,"name":"FQ3 2014","ticker":"IBKR","eps":-0.13,"revenue":171.0,"eps_flagging_range":[],"revenue_flagging_range":[],"estimize_eps_mean":null,"estimize_eps_range":[],"estimize_revenue_mean":null,"estimize_revenue_range":[],"wallstreet_eps_mean":0.03,"wallstreet_eps_range":[],"wallstreet_revenue_mean":null,"wallstreet_revenue_range":[],"guidance_eps_mean":null,"guidance_eps_range":[],"guidance_revenue_mean":null,"guidance_revenue_range":[],"year_over_year_eps":null,"year_over_year_revenue":null,"open":false,"reportsAt":1413907200000,"url":"/ibkr/fq3-2014"},{"id":125476,"name":"FQ4 2014","ticker":"IBKR","eps":0.02,"revenue":208.1,"eps_flagging_range":[],"revenue_flagging_range":[],"estimize_eps_mean":null,"estimize_eps_range":[],"estimize_revenue_mean":null,"estimize_revenue_range":[],"wallstreet_eps_mean":0.06,"wallstreet_eps_range":[],"wallstreet_revenue_mean":null,"wallstreet_revenue_range":[],"guidance_eps_mean":null,"guidance_eps_range":[],"guidance_revenue_mean":null,"guidance_revenue_range":[],"year_over_year_eps":-0.777777777777778,"year_over_year_revenue":-0.167266906762705,"open":false,"reportsAt":1421769600000,"url":"/ibkr/fq4-2014"},{"id":125477,"name":"FQ1 2015","ticker":"IBKR","eps":-0.24,"revenue":172.0,"eps_flagging_range":[],"revenue_flagging_range":[],"estimize_eps_mean":null,"estimize_eps_range":[],"estimize_revenue_mean":null,"estimize_revenue_range":[],"wallstreet_eps_mean":-0.07,"wallstreet_eps_range":[],"wallstreet_revenue_mean":null,"wallstreet_revenue_range":[],"guidance_eps_mean":null,"guidance_eps_range":[],"guidance_revenue_mean":null,"guidance_revenue_range":[],"year_over_year_eps":-1.68571428571429,"year_over_year_revenue":-0.515356438433361,"open":false,"reportsAt":1429632000000,"url":"/ibkr/fq1-2015"},{"id":125478,"name":"FQ2 2015","ticker":"IBKR","eps":0.44,"revenue":387.0,"eps_flagging_range":[-0.02,0.59],"revenue_flagging_range":[345.0,345.0],"estimize_eps_mean":null,"estimize_eps_range":[],"estimize_revenue_mean":null,"estimize_revenue_range":[],"wallstreet_eps_mean":0.32,"wallstreet_eps_range":[0.27,0.36],"wallstreet_revenue_mean":345.0,"wallstreet_revenue_range":[345.0,345.0],"guidance_eps_mean":null,"guidance_eps_range":[],"guidance_revenue_mean":null,"guidance_revenue_range":[],"year_over_year_eps":0.517241379310345,"year_over_year_revenue":0.251212415130941,"open":false,"reportsAt":1437508800000,"url":"/ibkr/fq2-2015"},{"id":125479,"name":"FQ3 2015","ticker":"IBKR","eps":0.35,"revenue":359.0,"eps_flagging_range":[-0.11,0.64],"revenue_flagging_range":[328.0,328.0],"estimize_eps_mean":0.28,"estimize_eps_range":[0.1,0.33],"estimize_revenue_mean":328.74,"estimize_revenue_range":[300.0,338.0],"wallstreet_eps_mean":0.28,"wallstreet_eps_range":[0.28,0.29],"wallstreet_revenue_mean":328.0,"wallstreet_revenue_range":[328.0,328.0],"guidance_eps_mean":null,"guidance_eps_range":[],"guidance_revenue_mean":null,"guidance_revenue_range":[],"year_over_year_eps":3.69230769230769,"year_over_year_revenue":1.09941520467836,"open":false,"reportsAt":1445371200000,"url":"/ibkr/fq3-2015"},{"id":126147,"name":"FQ4 2015","ticker":"IBKR","eps":null,"revenue":null,"eps_flagging_range":[-0.06,0.68],"revenue_flagging_range":[330.75,405.75],"estimize_eps_mean":null,"estimize_eps_range":[],"estimize_revenue_mean":null,"estimize_revenue_range":[],"wallstreet_eps_mean":0.33,"wallstreet_eps_range":[0.32,0.33],"wallstreet_revenue_mean":350.0,"wallstreet_revenue_range":[350.0,350.0],"guidance_eps_mean":null,"guidance_eps_range":[],"guidance_revenue_mean":null,"guidance_revenue_range":[],"year_over_year_eps":null,"year_over_year_revenue":null,"open":true,"reportsAt":1453237200000,"url":"/ibkr/fq4-2015"}] );
+    var allEstimates    = new Estimize.EstimatesCollection( [{"instrumentId":2370,"instrumentSlug":"ibkr","releaseId":126147,"releaseSlug":"fq4-2015","id":240273,"eps":0.21,"revenue":347.8,"username":"Analyst_7150295","statement":"","wallstreetRevenue":350.0,"shares":{"shares_hash":{"linkedin":null,"stocktwits":null,"twitter":null}},"createdAt":1446126387000,"persisted":true,"rank":" of 0","points":null,"eps_points":null,"revenue_points":null},{"instrumentId":2370,"instrumentSlug":"ibkr","releaseId":126147,"releaseSlug":"fq4-2015","id":227711,"eps":0.36,"revenue":353.0,"username":"wroloson","statement":"","wallstreetRevenue":350.0,"shares":{"shares_hash":{"linkedin":null,"stocktwits":null,"twitter":null}},"createdAt":1445598022000,"persisted":true,"rank":" of 0","points":null,"eps_points":null,"revenue_points":null}] );
+    var userEstimates   = new Estimize.EstimatesCollection( [{"instrumentId":2370,"instrumentSlug":"ibkr","releaseId":125472,"releaseSlug":"fq4-2013","id":null,"eps":null,"revenue":null,"username":null,"statement":"","wallstreetRevenue":null,"shares":{"shares_hash":{"linkedin":null,"stocktwits":null,"twitter":null}},"createdAt":null,"persisted":false,"rank":" of 0","points":null,"eps_points":null,"revenue_points":null},{"instrumentId":2370,"instrumentSlug":"ibkr","releaseId":125473,"releaseSlug":"fq1-2014","id":null,"eps":null,"revenue":null,"username":null,"statement":"","wallstreetRevenue":null,"shares":{"shares_hash":{"linkedin":null,"stocktwits":null,"twitter":null}},"createdAt":null,"persisted":false,"rank":" of 0","points":null,"eps_points":null,"revenue_points":null},{"instrumentId":2370,"instrumentSlug":"ibkr","releaseId":125474,"releaseSlug":"fq2-2014","id":null,"eps":null,"revenue":null,"username":null,"statement":"","wallstreetRevenue":null,"shares":{"shares_hash":{"linkedin":null,"stocktwits":null,"twitter":null}},"createdAt":null,"persisted":false,"rank":" of 0","points":null,"eps_points":null,"revenue_points":null},{"instrumentId":2370,"instrumentSlug":"ibkr","releaseId":125475,"releaseSlug":"fq3-2014","id":null,"eps":null,"revenue":null,"username":null,"statement":"","wallstreetRevenue":null,"shares":{"shares_hash":{"linkedin":null,"stocktwits":null,"twitter":null}},"createdAt":null,"persisted":false,"rank":" of 0","points":null,"eps_points":null,"revenue_points":null},{"instrumentId":2370,"instrumentSlug":"ibkr","releaseId":125476,"releaseSlug":"fq4-2014","id":null,"eps":null,"revenue":null,"username":null,"statement":"","wallstreetRevenue":null,"shares":{"shares_hash":{"linkedin":null,"stocktwits":null,"twitter":null}},"createdAt":null,"persisted":false,"rank":" of 0","points":null,"eps_points":null,"revenue_points":null},{"instrumentId":2370,"instrumentSlug":"ibkr","releaseId":125477,"releaseSlug":"fq1-2015","id":null,"eps":null,"revenue":null,"username":null,"statement":"","wallstreetRevenue":null,"shares":{"shares_hash":{"linkedin":null,"stocktwits":null,"twitter":null}},"createdAt":null,"persisted":false,"rank":" of 0","points":null,"eps_points":null,"revenue_points":null},{"instrumentId":2370,"instrumentSlug":"ibkr","releaseId":125478,"releaseSlug":"fq2-2015","id":null,"eps":null,"revenue":null,"username":null,"statement":"","wallstreetRevenue":345.0,"shares":{"shares_hash":{"linkedin":null,"stocktwits":null,"twitter":null}},"createdAt":null,"persisted":false,"rank":" of 0","points":null,"eps_points":null,"revenue_points":null},{"instrumentId":2370,"instrumentSlug":"ibkr","releaseId":125479,"releaseSlug":"fq3-2015","id":null,"eps":null,"revenue":null,"username":null,"statement":"","wallstreetRevenue":328.0,"shares":{"shares_hash":{"linkedin":null,"stocktwits":null,"twitter":null}},"createdAt":null,"persisted":false,"rank":" of 41","points":null,"eps_points":null,"revenue_points":null},{"instrumentId":2370,"instrumentSlug":"ibkr","releaseId":126147,"releaseSlug":"fq4-2015","id":null,"eps":0.33,"revenue":350.0,"username":null,"statement":"","wallstreetRevenue":350.0,"shares":{"shares_hash":{"linkedin":null,"stocktwits":null,"twitter":null}},"createdAt":null,"persisted":false,"rank":" of 0","points":null,"eps_points":null,"revenue_points":null}] );
+  
+    if (true) {
+      var currentUser = new Estimize.User( { "username":"NA","settings":{ "understands_following?":false } } );
+    } else{
+      var currentUser = new Estimize.User( {"bio":{},"settings":{},"user_tokens":{}});
+    };
+  
+    var revisions = {
+      wallStreet  : {},
+      estimize    : {},
+      guidance    : {}
+    };
+  
+    revisions.wallStreet.eps      = new Estimize.RevisionCollection( [{"updatedAt":1438079847000,"mean":0.33,"count":2}] );
+    revisions.wallStreet.revenue  = new Estimize.RevisionCollection( [{"updatedAt":1438079847000,"mean":350.0,"count":1}] );
+    revisions.estimize.eps        = new Estimize.RevisionCollection( [] );
+    revisions.estimize.revenue    = new Estimize.RevisionCollection( [] );
+    revisions.guidance.eps        = new Estimize.RevisionCollection( [] );
+    revisions.guidance.revenue    = new Estimize.RevisionCollection( [] );
+    revisions.currentUser         = new Estimize.EstimatesCollection( );
+  
+    Estimize.Releases.appOptions = {
+      model                 : release,
+      instrument            : instrument,
+      collection            : releases,
+      allEstimates          : allEstimates,
+      currentUserEstimates  : userEstimates,
+      currentUserEstimate   : estimate,
+      currentUser           : currentUser,
+      revisions             : revisions,
+      showConfirm           : false,
+      showBlindEstimateExperiment : true,
+      estimateFormType      : 'logged_out_estimate',
+      showFlaggingRange     : false
+    };
+  
+    if (false) {
+      var selectedEstimates = Estimize.Releases.appOptions.selectedEstimates = new Estimize.EstimatesCollection(  );
+  
+      var id = release.get('id');
+      Estimize.Releases.appOptions.selectedEstimate = selectedEstimates.find( function(estimate) {
+        return estimate.get('releaseId') == id;
+      });
+  
+      Estimize.Releases.appOptions.revisions.selected = new Estimize.EstimatesCollection(  );
+    }
+  });
+</script>
+
+<script>
+  $(function(){
+    var appOptions = Estimize.Releases.appOptions;
+    var releaseAppView = new Estimize.Releases.AppView(appOptions);
+    Estimize.Users.Tooltips.init();
+    Estimize.Releases.EstimateStatements.removeToggleIfShort();
+    Estimize.Releases.EstimateStatements.attachToggleListeners();
+  
+    var shareableCharts = new Estimize.ShareableCharts.AppView({
+      release: appOptions.model,
+      currentUser: appOptions.currentUser,
+      releaseClass: 'Release'
+    });
+  });
+</script>
+
+
+
+</div>
+
+<footer>
+
+<div class='container'>
+<hr>
+</div>
+<div id='contact-panel'>
+<div class='container'>
+
+<div class='estimize-grid'>
+<div class='estimize-row'>
+<div class='estimize-column span-66'>
+<div class='estimize-row'>
+<div id='contact-panel-form-wrap'>
+<h3>
+<img src="/assets/icons/icon-message-76846556746efa141a7e5688c8bdcc33.png" alt="Icon message" />
+Email
+<a href="mailto:info@estimize.com">info@estimize.com</a>
+or use the form below
+</h3>
+</div>
+</div>
+</div>
+<div class='estimize-column span-33' id='contact-panel-contact-help'>
+<div class='estimize-row'>
+<div class='panel'>
+<div class='inner'>
+<span>Chat with us</span>
+<br>
+<img src="/assets/icons/icon-chat-bubbles-40x40-e06c8851f420d3d58c7aeeeccdc54a80.png" alt="Icon chat bubbles 40x40" />
+<br>
+<a onclick="olark(&#39;api.box.expand&#39;)" href="javascript:void(0);">Click to chat</a>
+</div>
+</div>
+</div>
+<div class='estimize-row'>
+<div class='panel'>
+<div class='inner'>
+<span>Call us</span>
+<br>
+<img src="/assets/icons/icon-phone-50x33-7a446d6244c7c7aaeb2f819c192e6e46.png" alt="Icon phone 50x33" />
+<br>
+<a href="tel://1-888-447-4189">888-447-4189</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class='container'>
+<div class='footer-container'>
+<div class='footer-column footer-column-about'>
+<div class='footer-column-title'>About Estimize</div>
+<p>
+Estimize is an open financial estimates platform that aggregates earnings and economic estimates from independent, buy-side, and sell-side analysts, along with those of private investors and students.
+<a href="/about">Read more »</a>
+</p>
+<ul class='footer-social'>
+<li class='footer-social-link'><a target="_blank" href="http://www.twitter.com/Estimize"><img alt="Estimize on Twitter" width="23" height="23" src="/assets/icons_social/twitter_logo-c8efcb9888d84797a6b34ec2aef753b5.png" /></a></li>
+<li class='footer-social-link'><a target="_blank" href="http://www.stocktwits.com/estimize"><img alt="Estimize on Twitter" width="23" height="23" src="/assets/icons_social/stocktwits_logo-9c939d94b612b429e9449df988d06955.png" /></a></li>
+<li class='footer-social-link'><a target="_blank" href="http://www.facebook.com/Estimize"><img alt="Estimize on Facebook" width="23" height="23" src="/assets/icons_social/facebook_logo-391cdd833d63cb1dee7b860741b2cad0.png" /></a></li>
+</ul>
+</div>
+<div class='footer-column'>
+<div class='footer-column-title'>Product</div>
+<ul class='footer-column-list'>
+<li class='footer-column-item'><a href="/calendar">Calendar</a></li>
+<li class='footer-column-item'><a href="/sectors">Equities</a></li>
+<li class='footer-column-item'><a href="/economic_indicators">Economics</a></li>
+<li class='footer-column-item'><a href="/rankings">Rankings</a></li>
+<li class='footer-column-item'><a href="/leagues">Leagues</a></li>
+</ul>
+</div>
+<div class='footer-column'>
+<div class='footer-column-title'>Learn</div>
+<ul class='footer-column-list'>
+<li class='footer-column-item'><a href="http://blog.estimize.com">Blog</a></li>
+<li class='footer-column-item'><a href="/community">Community</a></li>
+<li class='footer-column-item'><a href="/press">Press</a></li>
+<li class='footer-column-item'><a href="/beliefs">Beliefs</a></li>
+<li class='footer-column-item'><a target="_blank" href="https://angel.co/estimize/jobs/">Jobs</a></li>
+</ul>
+</div>
+<div class='footer-column'>
+<div class='footer-column-title'>Access Data</div>
+<ul class='footer-column-list'>
+<li class='footer-column-item'><a href="/screener">Screener</a></li>
+<li class='footer-column-item'><a href="/api">Download Data</a></li>
+<li class='footer-column-item'><a href="/partners">Partners</a></li>
+</ul>
+</div>
+<div class='footer-column'>
+<div class='footer-column-title'>Help</div>
+<ul class='footer-column-list'>
+<li class='footer-column-item'><a href="/faq">FAQ</a></li>
+<li class='footer-column-item'><a href="/contact">Contact</a></li>
+<li class='footer-column-item'><a href="/terms">Terms</a></li>
+<li class='footer-column-item'><a href="/privacy">Privacy</a></li>
+</ul>
+</div>
+</div>
+<div class='footer-container'>
+<div class='footer-disclaimer'>
+<p>
+Fundamental company data (actuals, earnings dates, guidance) provided by
+<a target="_blank" href="http://www.benzinga.com">Benzinga,</a>
+Wall Street estimates provided by
+<a target="_blank" href="http://www.zacks.com">Zacks,</a>
+economic indicators (actuals and report dates) provided by
+<a target="_blank" href="https://ycharts.com">YCharts.</a>
+All information provided "as is" for informational purposes only and is not intended for trading purposes or as advice. Neither Estimize nor any of its independent providers is liable for any informational errors, incompleteness, or delays, or for actions taken in reliance on information contained herein. By accessing the Estimize site you agree not to redistribute the information found therein.
+</p>
+<p class='footer-copyright'>Copyright &copy; 2015 Estimize. All Rights Reserved.</p>
+</div>
+</div>
+
+</div>
+</footer>
+</div>
+<script id='sign-up-template' type='text/template'>
+<div class='sign-up-dialog-new-design' id='sign-up-dialog'>
+<div class='guest-header' id='sign-up-message'>
+<h1>
+GET REAL-TIME ALERTS ON
+IBKR
+</h1>
+<p>
+Sign up with Estimize to get notified about consensus changes, notable estimate activity, and more for
+IBKR.
+</p>
+
+</div>
+<div class='guest-oauth-options'>
+<h3 class='guest-type-heading'>Sign up with:</h3>
+<a class="btnicn omniauth-btn linkedin sign-up-click" type="LinkedIn" href="/users/auth/linkedin"><span class='btnicn-icon omniauth-btnicn-icon linkedin'></span>
+LinkedIn
+</a><a class="btnicn omniauth-btn twitter sign-up-click" type="Twitter" href="/users/auth/twitter"><span class='btnicn-icon omniauth-btnicn-icon twitter'></span>
+Twitter
+</a><a class="btnicn omniauth-btn stocktwits sign-up-click" type="StockTwits" href="/users/auth/stocktwits"><span class='btnicn-icon omniauth-btnicn-icon stocktwits'></span>
+StockTwits
+</a></div>
+<div class='guest-choice'>
+<h3 class='guest-type-heading'>or</h3>
+</div>
+<div class='guest-form-fields' id='sign-up-form-fields'>
+<button class='btnicn btnicn-light sign-up-with-email-btn'>
+<span class='btnicn-icon btnicn-icon-email'></span>
+Your email
+</button>
+<h3 class='guest-type-heading guest-type-heading-email'>Sign up with your email:</h3>
+<form class="sign-up-form streamlined" id="new_user" action="/users/registrations" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="wzmV21EAEiPVdug/Gpww4romRqrtkggD6kLTdiP01D9X7u17ZEnYaO4m2GsscvP/7SJDX+IKfCUzhO2mGUqemw==" /><label class="guest-label sign-up-label-email" for="user_email">Email
+</label><input class="guest-field" type="email" name="user[email]" id="user_email" />
+<p class='sign-up-hint'>Your email will never be displayed on our site.</p>
+<input value="Analyst_2401881" type="hidden" name="user[username]" id="user_username" />
+<label class="guest-label" for="user_password">Password</label>
+<input class="guest-field" type="password" name="user[password]" id="user_password" />
+<p class='sign-up-hint'>Minimum 6 characters</p>
+<p>
+By signing up, you have read and agree to our
+<a target="_blank" href="/terms">terms of service.</a>
+</p>
+<input class='button-default guest-submit' type='submit' value='Join Estimize'>
+</form>
+<p class='alternate-auth guest-alternate-auth'>
+Already have an account?
+<a class="log-in" href="/users/sign_in">Log In</a>
+</p>
+</div>
+</div>
+
+</script>
+<script id='log-in-template' type='text/template'>
+<div id='log-in-dialog'>
+<div class='guest-form-fields'>
+<h3 class='guest-type-heading guest-type-heading-email'>Log in using email:</h3>
+<form class="new_user" id="new_user" action="/users/sign_in" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="q/ILoc7PyytGhyPzOhdI7nM2qUNm8RNMo8P1gDwIejg/JXMB+4YBYH3XE6cM+YvzJDKstmlpZ2p6BctQBrYwnA==" /><label class='log-in-dialog-user-name guest-label'>
+Username or Email
+<input class="guest-field" type="text" name="user[login]" id="user_login" />
+</label>
+<label class='guest-label'>
+Password
+<input class="guest-field" type="password" name="user[password]" id="user_password" />
+</label>
+<label class='checkbox guest-label'>
+<input name="user[remember_me]" type="hidden" value="0" /><input type="checkbox" value="1" name="user[remember_me]" id="user_remember_me" />
+Remember Me
+</label>
+<input class='button-default guest-submit' type='submit' value='Log In'>
+<p class='log-in-forgot-password'>
+<a class="forgot-password" href="/users/password/new">Forgot password?</a>
+</p>
+</form>
+</div>
+<div class='guest-choice log-in-choice'>
+<h3 class='guest-type-heading'>or</h3>
+</div>
+<div class='guest-oauth-options'>
+<h3 class='guest-type-heading'>Log in with:</h3>
+<a class="btnicn omniauth-btn linkedin sign-up-click" type="LinkedIn" href="/users/auth/linkedin"><span class='btnicn-icon omniauth-btnicn-icon linkedin'></span>
+LinkedIn
+</a><a class="btnicn omniauth-btn twitter sign-up-click" type="Twitter" href="/users/auth/twitter"><span class='btnicn-icon omniauth-btnicn-icon twitter'></span>
+Twitter
+</a><a class="btnicn omniauth-btn stocktwits sign-up-click" type="StockTwits" href="/users/auth/stocktwits"><span class='btnicn-icon omniauth-btnicn-icon stocktwits'></span>
+StockTwits
+</a><p class='alternate-auth'>
+Don't have an account?
+<a class="sign-up" href="/users/sign_up">Join Estimize</a>
+</p>
+</div>
+</div>
+
+</script>
+<script id='forgot-password-template' type='text/template'>
+<div id='forgot-password-dialog'>
+<div class='guest-header'>
+<h1>Forgot Password</h1>
+<p>Enter your email address and we'll send you a link to reset your password.</p>
+</div>
+<form class="new_user" id="new_user" action="/users/password" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="9cswaHJtEOeangUC4zKjNkeNQa160ZHXyn6vJl5CpBFhHEjIRyTarKHONVbV3GArEIlEWHVJ5fETuJH2ZPzutQ==" /><input placeholder="email address" class="guest-field" type="text" name="user[login]" id="user_login" />
+<input class='button-default guest-submit' type='submit' value='Recover Password'>
+</form>
+<p><a class="log-in" href="/users/sign_in">Return to log in</a></p>
+</div>
+
+</script>
+<script>
+  $(function() {
+    Estimize.guestModal = new Estimize.Shared.GuestModalView();
+  });
+</script>
+
+<script src="/assets/deferrable-af6c635db81a5a7d8dbb8b1748756348.js" debug="false"></script>
+<script>
+  (function() {
+    if (Modernizr.svg) {
+      var s = '<script src=\"/assets/svg-capable-385f8620290ee03e0a648c35f012a7fa.js\"><\/script>'
+      $('script').last().after(s);
+    };
+  })();
+  
+  $(function() {
+    Estimize.Tooltips.instruments.init();
+  });
+</script>
+<script id='flagged-message-template' type='text/template'>
+<strong>This estimate wasn't included in the consensus.</strong>
+<br>
+<a href="/faq#reliability">Why was this estimate flagged?</a>
+</script>
+<script id='estimate-create-template' type='text/template'>
+<div id='scroll-to-fixed'>
+<div class='container'>
+<form class="estimate-create logged-out-estimate" action="/ibkr" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="vpq1HmJZST5aWNosO9jt2ilvr6W3b0ZDCkmN+RNRA14qTc2+VxCDdWEI6ngNNi7HfmuqULj3MmXTj7MpKe9J+g==" /><ul id='release-fundamentals'>
+<li class='why-estimate'>
+<h4>Why should you estimate?</h4>
+<a href="/faq#contribute"><img width="16" height="16" alt="Read more" class="more-info" title="" src="/assets/icons/question_mark-08f296d8d928b149c64e7f42c14168dd.png" /></a>
+<p>Estimize beats Wall Street 69.5% of the time. Your estimates make Estimize the most representative data set anywhere.</p>
+</li>
+<li class='eps'>
+<label for="estimate_eps">EPS:</label>
+<input autocomplete="off" id="estimate_eps" name="estimate[eps]" data-name="eps" size="30" type="text" value="<%= getEps() %>">
+<div class='increment'></div>
+<div class='decrement'></div>
+</li>
+<li class='revenue'>
+<label for="estimate_revenue">Revenue:</label>
+<input autocomplete="off" id="estimate_revenue" name="estimate[revenue]" data-name="revenue" size="30" placeholder="<%= getRevenue() %>" type="text" value="<%= getRevenue() %>">
+<div class='increment'></div>
+<div class='decrement'></div>
+</li>
+<li class='publish'>
+<button class="btnicn estimate-form-submit btnicn-light"><span class="btnicn-icon btnicn-icon-plus-sign"></span>Create Estimate</button>
+</li>
+</ul>
+</form>
+</div>
+</div>
+<div class='reveal-modal' id='error-range-modal'>
+<div class='modal-text'>
+<p>
+Our estimate reliability algorithms have flagged your estimate for being too far outside the trusted range.
+This estimate will not be included in the consensus until it has been manually reviewed.
+</p>
+<p>Are you sure you want to create this estimate?</p>
+</div>
+<p>
+<button name="button" type="button" class="cancel-creation close-error-range-modal">Cancel</button>
+<button name="button" type="button" class="confirm-creation close-error-range-modal button-default">Create</button>
+</p>
+</div>
+<div class='error-range-modal reveal-modal' id='lacks-historical-modal' style='visibility: hidden;'>
+<div class='modal-text'>
+<h2>
+<strong>Your estimate has been flagged.</strong>
+</h2>
+<p>
+It's not you, it's us... we don't have a history on this company yet. Your estimate will be manually reviewed and if appropriate, unflagged shortly.
+</p>
+</div>
+<p>
+<button name="button" type="button" class="confirm-creation solo close-error-range-modal button-default">Got it.</button>
+</p>
+</div>
+
+</script>
+<div class='reveal-modal medium' id='blind-estimate-experiment-modal'>
+<h2 class='blind-estimate-experiment-modal-header'>
+Estimate Now
+</h2>
+<p class='blind-estimate-experiment-modal-subheader'>
+Join thousands of contributors to build the best consensus on
+IBKR
+</p>
+
+<img class="blind-estimate-experiment-modal-image" height="41" width="50" src="/assets/icons/icon-stocklist-802ab8fe188bcd40e28fdd6ca7726c87.png" alt="Icon stocklist" />
+<p>
+<strong>We ask that you estimate prior to viewing the Estimize consensus to preserve the independence of your estimate.</strong>
+</p>
+<p>
+Estimates from individuals of ALL backgrounds and methods are needed to build the most accurate and representative data set possible.
+</p>
+<button class='button-default blind-estimate-experiment-modal-button'>I'll estimate</button>
+<p><a class="blind-estimate-experiment-modal-link" href="http://blog.estimize.com/post/133094378977/why-the-estimize-platform-is-blind">Learn more about why some data is hidden</a></p>
+</div>
+<script>
+  $(document).on('click', 'a[data-blind-estimate-experiment-modal]', function (event) {
+    event.preventDefault();
+    $('#blind-estimate-experiment-modal').reveal({
+      dismissmodalclass: 'blind-estimate-experiment-modal-button'
+    });
+    $('#blind-estimate-experiment-modal').on('reveal:close', function() {
+      // Bug fix: remove modal bg to avoid clashing with another modal
+      $('.reveal-modal-bg').remove();
+    })
+  });
+</script>
+<script>
+  $(function() {
+    new Estimize.Releases.FlaggedMessagesView();
+  
+    $('.blind-estimate-experiment-ticker').qtip({
+      content: "Estimate to see hidden data for this quarter",
+      position: {
+        my: 'top left',
+        at: 'left bottom'
+      },
+      style: {
+        classes: 'ui-tooltip-more-info'
+      }
+    });
+    $('.blind-estimate-experiment-charts-message-icon, .blind-estimate-experiment-release-navigation, .blind-estimate-experiment-lock, .blind-estimate-experiment-consensus-numbers').qtip({
+      content: "Estimate to see hidden data for this quarter",
+      position: {
+        my: 'top center',
+        at: 'bottom center'
+      },
+      style: {
+        classes: 'ui-tooltip-more-info'
+      }
+    });
+  });
+</script>
+<script>
+  $(function() {
+    new Estimize.EngagementPrompt();
+  });
+</script>
+<script>
+  $(function() {
+    new Estimize.ContactPanelFormView({
+      parent: "#contact-panel-form-wrap",
+      userEmail: "",
+      userName: ""
+    });
+  });
+</script>
+
+<script type="text/javascript">if (!NREUMQ.f) { NREUMQ.f=function() {
+NREUMQ.push(["load",new Date().getTime()]);
+var e=document.createElement("script");
+e.type="text/javascript";
+e.src=(("http:"===document.location.protocol)?"http:":"https:") + "//" +
+  "js-agent.newrelic.com/nr-100.js";
+document.body.appendChild(e);
+if(NREUMQ.a)NREUMQ.a();
+};
+NREUMQ.a=window.onload;window.onload=NREUMQ.f;
+};
+NREUMQ.push(["nrfj","bam.nr-data.net","b8f7f1963b","618165","e1dYRkUNWl5XEU1BUlRdV0FSERlBWgwV",0,210,new Date().getTime(),"","","","",""]);</script></body>
+

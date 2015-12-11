@@ -7,10 +7,13 @@ Public Sub GetDataGuruFocus(lRow As Long, sSymbol As String)
   Dim sURL As String, sHTML As String
   Dim stmp As String, sVal As String
   Dim sVals(5) As String, sVals2(5) As String
+  Dim lTimeOut As Long
+  
+  lTimeOut = 45
   
   'Quaterly EBITDA data
   sURL = Replace(g_GuruFocusURL_EBITDA, "#symb#", sSymbol)
-  IENavigate g_IE, sURL
+  IENavigate g_IE, sURL, lTimeOut
   sHTML = g_IE.Document.body.innerHTML
   
   i = InStr(sHTML, "Quarterly Data</strong>")
@@ -30,7 +33,7 @@ Public Sub GetDataGuruFocus(lRow As Long, sSymbol As String)
   
   
   sURL = Replace(g_GuruFocusBaseURL, "#symb#", sSymbol)
-  IENavigate g_IE, sURL
+  IENavigate g_IE, sURL, lTimeOut
   sHTML = g_IE.Document.body.innerHTML
   sHTML = Replace(sHTML, """", "'")
   'Issuance of Stock
@@ -61,13 +64,13 @@ Public Sub GetDataGuruFocus(lRow As Long, sSymbol As String)
   'IENavigate navigates IE to sURL and waits when page will be loaded
   'After webpage was loaded I use g_IE.Document.body.innerHTML to get it's HTML code
   '#Done
-  IENavigate g_IE, sURL
+  IENavigate g_IE, sURL, lTimeOut
   sHTML = g_IE.Document.body.innerHTML
   GetDataGuruFocus_Quarters_58 sHTML, lRow, ">Cash Flow from Operations</td>", "rGuruFocusOA_Q_OLD"
   
   'Capital Expenditure
   sURL = Replace("http://www.gurufocus.com/term/Cash%20Flow_CPEX/#symb#/Capital%252BExpenditure/", "#symb#", sSymbol)
-  IENavigate g_IE, sURL
+  IENavigate g_IE, sURL, lTimeOut
   sHTML = g_IE.Document.body.innerHTML
   GetDataGuruFocus_Quarters_58 sHTML, lRow, ">Cash Flow_CPEX</td>", "rGuruFocusCapEx_Q_OLD"
   
@@ -79,19 +82,19 @@ Public Sub GetDataGuruFocus(lRow As Long, sSymbol As String)
 
   'Gross Profit
   sURL = Replace("http://www.gurufocus.com/term/Gross%20Profit/#symb#/Gross%252BProfit/", "#symb#", sSymbol)
-  IENavigate g_IE, sURL
+  IENavigate g_IE, sURL, lTimeOut
   sHTML = g_IE.Document.body.innerHTML
   GetDataGuruFocus_Quarters_18 sHTML, lRow, ">Gross_Profit</td>", "rGuruFocusGP_Q_OLD"
   
   'Net Income
   sURL = Replace("http://www.gurufocus.com/term/Net%20Income/#symb#/Net%252BIncome/", "#symb#", sSymbol)
-  IENavigate g_IE, sURL
+  IENavigate g_IE, sURL, lTimeOut
   sHTML = g_IE.Document.body.innerHTML
   GetDataGuruFocus_Quarters_18 sHTML, lRow, ">Net Income</td>", "rGuruFocusNI_Q_OLD"
   
   'EBIT
   sURL = Replace("http://www.gurufocus.com/term/Operating%20Income/#symb#/Operating%252BIncome/", "#symb#", sSymbol)
-  IENavigate g_IE, sURL
+  IENavigate g_IE, sURL, lTimeOut
   sHTML = g_IE.Document.body.innerHTML
   GetDataGuruFocus_Quarters_18 sHTML, lRow, ">Operating Income</td>", "rGuruFocusEBIT_Q_OLD"
   

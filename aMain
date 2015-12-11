@@ -223,13 +223,13 @@ Public Function IsNumeric2(stmp As String) As Boolean
   
 End Function
 
-Public Function IENavigate(ByRef objIE As Object, sURL As String) As Boolean
+Public Function IENavigate(ByRef objIE As Object, sURL As String, Optional lTimeOut As Long = 30) As Boolean
 'Navigates Internet Explorer to specified URL
   On Error GoTo Err_Handler
   Dim lNumOfAttempts As Long
   Dim dtmp As Double
   
-  lNumOfAttempts = 3
+  lNumOfAttempts = 1
   
 '#Explain what does this line do ?
 'It goes to webpage link stored in sURL variable
@@ -241,7 +241,7 @@ Public Function IENavigate(ByRef objIE As Object, sURL As String) As Boolean
   dtmp = Timer()
   Do
     DoEvents
-    If Timer() - dtmp > 30 Then
+    If Timer() - dtmp > lTimeOut Then
         lNumOfAttempts = lNumOfAttempts - 1
         If lNumOfAttempts = 0 Then Err.Raise 513, "GetURLs", "Timeout expired." & vbCrLf & sURL
     End If
