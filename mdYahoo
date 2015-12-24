@@ -161,7 +161,7 @@ Public Sub GetDataYahoo(lRow As Long, sSymbol As String)
   i = InStr(sHTML, ">Earnings Est<")
   YahooGetAnalystEstimates i, "yfnc_tablehead1", "rYahoo_EPSDate", lRow, sHTML, "br>", "<", False
   i = InStr(sHTML, ">Revenue Est<")
-  YahooGetAnalystEstimates i, "yfnc_tabledata1", "rYahoo_RevenueDate", lRow, sHTML, "br>", "<", False
+  YahooGetAnalystEstimates i, "yfnc_tablehead1", "rYahoo_RevenueDate", lRow, sHTML, "br>", "<", False
   
 Exit_Label:
   On Error Resume Next
