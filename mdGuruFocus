@@ -11,11 +11,11 @@ Public Sub GetDataGuruFocus(lRow As Long, sSymbol As String)
   
   lTimeOut = 45
   
-  'Quaterly EBITDA data
+   'Quaterly EBITDA data
   sURL = Replace(g_GuruFocusURL_EBITDA, "#symb#", sSymbol)
   IENavigate g_IE, sURL, lTimeOut
   sHTML = g_IE.Document.body.innerHTML
-  
+
   i = InStr(sHTML, "Quarterly Data</strong>")
   If i > 0 Then i = InStr(i, sHTML, ">EBITDA<")
   stmp = GetTextBetween(sHTML, "<td>", "</tr>", i)
@@ -30,6 +30,24 @@ Public Sub GetDataGuruFocus(lRow As Long, sSymbol As String)
     If j > 1 Then shData.Cells(lRow, Range("rGuruFocus_EBITDAQ").Column + j - 2).Value = GetNumberYahoo(sVal)
   Next j
   
+   'Quaterly Capex data
+'  sURL = Replace(g_GuruFocusURL_CAPEX, "#symb#", sSymbol)
+ ' IENavigate g_IE, sURL, lTimeOut
+ ' sHTML = g_IE.Document.body.innerHTML
+  
+ ' i = InStr(sHTML, "Quarterly Data</strong>")
+ ' If i > 0 Then i = InStr(i, sHTML, ">EBITDA<")
+ ' stmp = GetTextBetween(sHTML, "<td>", "</tr>", i)
+ ' i = 0
+ ' For j = 1 To 10
+ '   i = InStr(i + 1, stmp, "<strong>")
+ '   If i > 0 Then
+ '     sVal = AdvancedTrim(GetTextBetween(stmp, "<strong>", "</strong>", i))
+ '   Else
+ '     sVal = ""
+ '   End If
+ '   If j > 1 Then shData.Cells(lRow, Range("rGuruFocus_EBITDAQ").Column + j - 2).Value = GetNumberYahoo(sVal)
+ ' Next j
   
   
   sURL = Replace(g_GuruFocusBaseURL, "#symb#", sSymbol)
@@ -66,13 +84,14 @@ Public Sub GetDataGuruFocus(lRow As Long, sSymbol As String)
   '#Done
   IENavigate g_IE, sURL, lTimeOut
   sHTML = g_IE.Document.body.innerHTML
-  GetDataGuruFocus_Quarters_58 sHTML, lRow, ">Cash Flow from Operations</td>", "rGuruFocusOA_Q_OLD"
+  GetDataGuruFocus_Quarters_18 sHTML, lRow, ">Cash Flow from Operations</td>", "rGuruFocusOA_Q_OLD"
   
   'Capital Expenditure
   sURL = Replace("http://www.gurufocus.com/term/Cash%20Flow_CPEX/#symb#/Capital%252BExpenditure/", "#symb#", sSymbol)
   IENavigate g_IE, sURL, lTimeOut
   sHTML = g_IE.Document.body.innerHTML
-  GetDataGuruFocus_Quarters_58 sHTML, lRow, ">Cash Flow_CPEX</td>", "rGuruFocusCapEx_Q_OLD"
+  GetDataGuruFocus_Quarters_18 sHTML, lRow, ">Cash Flow_CPEX</td>", "rGuruFocusCapEx_Q_OLD"
+'  GetDataGuruFocus_Quarters_58 sHTML, lRow, ">Cash Flow_CPEX</td>", "rGuruFocusCapEx_Q_OLD"
   
 '  'Net Income
 '  sURL = Replace("http://www.gurufocus.com/term/Net%20Income/#symb#/Net%252BIncome/", "#symb#", sSymbol)
@@ -96,7 +115,19 @@ Public Sub GetDataGuruFocus(lRow As Long, sSymbol As String)
   sURL = Replace("http://www.gurufocus.com/term/Operating%20Income/#symb#/Operating%252BIncome/", "#symb#", sSymbol)
   IENavigate g_IE, sURL, lTimeOut
   sHTML = g_IE.Document.body.innerHTML
-  GetDataGuruFocus_Quarters_18 sHTML, lRow, ">Operating Income</td>", "rGuruFocusEBIT_Q_OLD"
+  GetDataGuruFocus_Quarters_18 sHTML, lRow, ">eps_diluted</td>", "rGuruFocusEBIT_Q_OLD"
+  
+  'Historical Revenue
+  sURL = Replace("http://www.gurufocus.com/term/Revenue/#symb#/Revenue/", "#symb#", sSymbol)
+  IENavigate g_IE, sURL, lTimeOut
+  sHTML = g_IE.Document.body.innerHTML
+  GetDataGuruFocus_Quarters_18 sHTML, lRow, ">Revenue</td>", "rGuruFocusRevenue_Actual"
+  
+  'Historical Diluted EPS
+  sURL = Replace("http://www.gurufocus.com/term/eps_diluated/#symb#/EPS%252B%252528Diluted%252529/", "#symb#", sSymbol)
+  IENavigate g_IE, sURL, lTimeOut
+  sHTML = g_IE.Document.body.innerHTML
+  GetDataGuruFocus_Quarters_18 sHTML, lRow, ">eps_diluted</td>", "rGuruFocusEPS_Actual"
   
 Exit_Label:
   On Error Resume Next

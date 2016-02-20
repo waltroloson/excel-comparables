@@ -15,5 +15,7 @@ Public Const g_HedgeMindURL As String = "https://hedgemind.com/stocks/symbol?t=#
 Public Const g_GuruFocusBaseURL As String = "www.gurufocus.com/financials/#symb#"
 Public Const g_GuruFocusURL As String = "http://www.gurufocus.com/financials/#symb##is"
 Public Const g_GuruFocusURL_EBITDA As String = "http://www.gurufocus.com/term/EBITDA/#symb#/Earnings%2BBefore%2BDepreciation%2Band%2BAmortization/"
+Public Const g_GuruFocusURL_CAPEX As String = "http://www.gurufocus.com/term/Cash%20Flow_CPEX/#symb#/Capital%252BExpenditure/"
+
 Public Const g_FinvizURL As String = "http://finviz.com/quote.ashx?t=#symb#"
 Public Const g_BloombergURL As String = "http://www.bloomberg.com/quote/#symb#"

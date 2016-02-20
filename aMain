@@ -1,4 +1,4 @@
-Option Explicit
+ Option Explicit
 Option Compare Text
 
 Public g_IE As Object
@@ -87,7 +87,8 @@ Public Sub ImportData()
         GetDataFinviz i, sSymbolFinViz
       End If
       
-      If g_RunBloombergUpdate And sSymbolBloomberg <> "" Then
+      'If g_RunBloombergUpdate And sSymbolBloomberg <> "" Then
+      If sSymbolBloomberg <> "" Then
         Range("rStatus").Value = "[Row #" & CStr(i - lRow + 1) & "/" & CStr(lRows - lRow + 1) & "] " & sSymbolBloomberg & ": Bloomberg"
         GetDataBloomberg i, sSymbolBloomberg
       End If
