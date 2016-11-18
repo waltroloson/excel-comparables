@@ -9,8 +9,8 @@ Public Sub ImportData()
   On Error GoTo Err_Handler
   Dim i As Long, lRows As Long, lRow As Long
   Dim lColUpdate As Long, lColUpdateDate As Long
-  Dim sSymbolGoogle As String, sSymbolYahoo As String, sSymbolEstimize As String, sSymbolGF As String, sSymbolHM As String, sSymbolFinViz As String, sSymbolBloomberg As String
-  Dim lColSymbolGoogle As Long, lColSymbolYahoo As Long, lColSymbolEstimize As Long, lColSymbolGF As Long, lColSymbolHM As Long, lColSymbolFinViz As Long, lColSymbolBloomberg As Long
+  Dim sSymbolGoogle As String, sSymbolYahoo As String, sSymbolEstimize As String, sSymbolGF As String, sSymbolHM As String, sSymbolFinViz As String, sSymbolBloomberg As String, sSymbolBarChart As String
+  Dim lColSymbolGoogle As Long, lColSymbolYahoo As Long, lColSymbolEstimize As Long, lColSymbolGF As Long, lColSymbolHM As Long, lColSymbolFinViz As Long, lColSymbolBloomberg As Long, lColSymbolBarChart As Long
   
   'Type of cursor change
   Application.Cursor = xlWait
@@ -24,21 +24,26 @@ Public Sub ImportData()
   
   'UsedRange.Row gets the first row that uses data, then you're adding the total number of rows
   lRows = shData.UsedRange.Row + shData.UsedRange.Rows.Count - 1
+  
   'rHeader is row 5, the way it is coded we have to start ticker stuff on row 6
   lRow = Range("rHeader").Row + 1
+  
   'rSymbol is the column with the "Google Symbol" (ticker)
   lColSymbolGoogle = Range("rSymbolGoogle").Column
+  
   lColSymbolYahoo = Range("rSymbolYahoo").Column
   lColSymbolEstimize = Range("rSymbolEstimize").Column
+  
   lColSymbolGF = Range("rSymbolGF").Column
   lColSymbolHM = Range("rSymbolHM").Column
   lColSymbolFinViz = Range("rSymbolFinViz").Column
   lColSymbolBloomberg = Range("rSymbolBloomberg").Column
+  lColSymbolBarChart = Range("rSymbolBarChart").Column
   'column for the update storing "TRUE or FALSE"
   lColUpdate = Range("rUpdate").Column
   'Stores update date later on
   lColUpdateDate = Range("rUpdateDate").Column
-  
+   
   'Loop through all rows and if cell with ticker is not empty - download metrics for this ticker
   For i = lRow To lRows
     g_RunBloombergUpdate = False
@@ -51,6 +56,7 @@ Public Sub ImportData()
     sSymbolHM = shData.Cells(i, lColSymbolHM)
     sSymbolFinViz = shData.Cells(i, lColSymbolFinViz)
     sSymbolBloomberg = shData.Cells(i, lColSymbolBloomberg)
+    sSymbolBarChart = shData.Cells(i, lColSymbolBarChart)
     'If sSymbol is not blank and if the update column has true then excecute code
     If shData.Cells(i, lColUpdate) = True Then
       If sSymbolYahoo <> "" Then
@@ -85,6 +91,8 @@ Public Sub ImportData()
       If sSymbolFinViz <> "" Then
         Range("rStatus").Value = "[Row #" & CStr(i - lRow + 1) & "/" & CStr(lRows - lRow + 1) & "] " & sSymbolFinViz & ": Finviz"
         GetDataFinviz i, sSymbolFinViz
+      Else
+        GetDataBarChart i, sSymbolBarChart
       End If
       
       'If g_RunBloombergUpdate And sSymbolBloomberg <> "" Then
