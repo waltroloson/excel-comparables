@@ -8,13 +8,14 @@ Public Sub GetDataBloomberg(lRow As Long, sSymbol As String)
   Dim stmp As String, sVal As String
   Dim oHttp As Object
   Dim dPrice As Double, dEarnings As Double
+  Dim dPE As Double
   
   sURL = Replace(g_BloombergURL, "#symb#", sSymbol)
 
-  Set oHttp = CreateObject("MSXML2.XMLHTTP")
+  Set oHttp = CreateObject("MSXML2.ServerXMLHTTP.6.0")
   oHttp.Open "GET", sURL, False
   oHttp.Send
-  sHTML = oHttp.ResponseText
+  sHTML = oHttp.responseText
   
   sHTML = Replace(sHTML, """", "")
   
@@ -26,8 +27,14 @@ Public Sub GetDataBloomberg(lRow As Long, sSymbol As String)
   i = InStr(sHTML, "earningsPerShare")
   If i > 0 Then dEarnings = GetNumberYahoo(AdvancedTrim(GetTextBetween(sHTML, ":", ",", i + 1)))
   
+  'Price Earnings Ratio
+  i = InStr(sHTML, "priceEarningsRatio")
+  If i > 0 Then dPE = GetNumberYahoo(AdvancedTrim(GetTextBetween(sHTML, ":", ",", i + 1)))
+  
   'P/E
-  If dEarnings = 0 Then
+  If dPE <> 0 Then
+    shData.Cells(lRow, Range("rBloomberg_PE").Column).Value = dPE
+  ElseIf dEarnings = 0 Then
     shData.Cells(lRow, Range("rBloomberg_PE").Column).Value = ""
   Else
     shData.Cells(lRow, Range("rBloomberg_PE").Column).Value = dPrice / dEarnings
