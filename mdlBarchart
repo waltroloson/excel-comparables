@@ -1,0 +1,37 @@
+Option Explicit
+Option Compare Text
+
+Public Sub GetDataBarChart(lRow As Long, sSymbol As String)
+  On Error GoTo Err_Handler
+  Dim i As Long, j As Long
+  Dim sURL As String, sHTML As String
+  Dim stmp As String, sVal As String
+  Dim lTimeOut As Long
+  
+  'Launch the correct URL and download innerHTML
+  lTimeOut = 45
+  sURL = Replace(g_BarChartURL, "#symb#", sSymbol)
+  IENavigate g_IE, sURL, lTimeOut
+  sHTML = g_IE.Document.body.innerHTML
+  
+  '52 Week Performance
+  i = InStr(sHTML, "52-Week")
+  If i > 0 Then i = InStr(i, sHTML, "cell-period-change")
+  sVal = AdvancedTrim(GetTextBetween(sHTML, "</span> <span>", "</span>", i + 1))
+  shData.Cells(lRow, Range("rFinfiz_PerfY").Column).Value = GetNumberYahoo(sVal)
+  
+  '12 Week Performance
+  i = InStr(sHTML, "3-Month")
+  If i > 0 Then i = InStr(i, sHTML, "cell-period-change")
+  sVal = AdvancedTrim(GetTextBetween(sHTML, "</span> <span>", "</span>", i + 1))
+  shData.Cells(lRow, Range("rFinfiz_PerfQ").Column).Value = GetNumberYahoo(sVal)
+  
+  
+Exit_Label:
+  On Error Resume Next
+  Exit Sub
+Err_Handler:
+  Debug.Print Err.Description
+  Resume Exit_Label
+End Sub
+
