@@ -8,8 +8,8 @@ Public Const g_YahooAE_URL As String = "http://finance.yahoo.com/q/ae?s=#symb#"
 
 Public Const g_GoogleURL As String = "https://www.google.com/finance?q=#symb#&fstype=ii"
 
-Public Const g_EstimizeURL As String = "http://www.estimize.com/#symb##chart=table"
-Public Const g_EstimizeBaseURL As String = "http://www.estimize.com"
+Public Const g_EstimizeURL As String = "https://www.estimize.com/#symb##chart=table"
+Public Const g_EstimizeBaseURL As String = "https://www.estimize.com"
 
 Public Const g_HedgeMindURL As String = "https://hedgemind.com/stocks/symbol?t=#symb#"
 Public Const g_GuruFocusBaseURL As String = "www.gurufocus.com/financials/#symb#"
@@ -19,3 +19,6 @@ Public Const g_GuruFocusURL_CAPEX As String = "http://www.gurufocus.com/term/Cas
 
 Public Const g_FinvizURL As String = "http://finviz.com/quote.ashx?t=#symb#"
 Public Const g_BloombergURL As String = "http://www.bloomberg.com/quote/#symb#"
+
+Public Const g_BarChartURL As String = "https://www.barchart.com/stocks/quotes/#symb#"
+
